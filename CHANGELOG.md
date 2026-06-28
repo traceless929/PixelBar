@@ -2,6 +2,12 @@
 
 本文件记录各版本的显著变更。完整提交历史见 GitHub。
 
+## [0.0.3.1] - 2026-06-28
+
+### 修复
+
+- **修复 App 图标、Logo 与样式预览图不显示**：发布时将 `Assets` 复制到输出目录，并通过文件路径加载（unpackaged WinUI 不支持仅靠 `ms-appx:///`）
+
 ## [0.0.3] - 2026-06-28
 
 ### 新增
@@ -49,6 +55,7 @@
 - 托盘、开机启动、首次使用引导
 - GitHub Actions CI / Release 工作流
 
+[0.0.3.1]: https://github.com/traceless929/PixelBar/compare/v0.0.3...v0.0.3.1
 [0.0.3]: https://github.com/traceless929/PixelBar/compare/v0.0.2.1...v0.0.3
 [0.0.2.1]: https://github.com/traceless929/PixelBar/compare/v0.0.2...v0.0.2.1
 [0.0.2]: https://github.com/traceless929/PixelBar/compare/v0.0.1...v0.0.2

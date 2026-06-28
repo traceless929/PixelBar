@@ -26,11 +26,9 @@
 
 
 
-- **标准安装包 + 便携版**：安装包含环境检测与使用引导；便携版免安装
+- **修复图标与样式预览图**：App 图标、侧栏 Logo、时钟/频谱预览图在 v0.0.3 安装版中不显示的问题
 
-- **修复 App 无法启动**：v0.0.2 / v0.0.2.1 单文件 exe 已不可用，请使用本版
-
-- 含歌词 **重新同步** 与 QQ 音乐后台自动检测
+- 含 v0.0.3 安装包 + 便携版、歌词重新同步等能力
 
 
 
@@ -54,7 +52,7 @@
 
 
 
-https://github.com/traceless929/PixelBar/blob/main/CHANGELOG.md#003---2026-06-28
+https://github.com/traceless929/PixelBar/blob/main/CHANGELOG.md#0031---2026-06-28
 
 
 

@@ -30,7 +30,7 @@ public sealed partial class ClockPage : Page
                 s.Style,
                 $"样式 {s.Style}",
                 s.Title,
-                new BitmapImage(new Uri($"ms-appx:///{s.Asset}"))))
+                AssetImages.LoadBitmap(s.Asset)))
             .ToList();
     }
 

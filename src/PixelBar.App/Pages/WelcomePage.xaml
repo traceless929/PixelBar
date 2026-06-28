@@ -16,10 +16,10 @@
             <StackPanel Spacing="24">
                 <StackPanel HorizontalAlignment="Center" Spacing="16">
                     <Image
+                        x:Name="WelcomeLogoImage"
                         Width="112"
                         Height="112"
                         HorizontalAlignment="Center"
-                        Source="Assets/AppLogo.png"
                         Stretch="Uniform" />
                     <controls:PageHeader
                         Subtitle="第三方 Halo PixelBar 控制客户端。按下面步骤连接设备，即可开始使用文字、灯光与像素屏功能。"

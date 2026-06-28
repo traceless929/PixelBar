@@ -24,11 +24,7 @@
             BackRequested="TitleBar_BackRequested"
             IsBackButtonVisible="{x:Bind NavFrame.CanGoBack, Mode=OneWay}"
             IsPaneToggleButtonVisible="True"
-            PaneToggleRequested="TitleBar_PaneToggleRequested">
-            <TitleBar.IconSource>
-                <ImageIconSource ImageSource="Assets/AppIcon.ico" />
-            </TitleBar.IconSource>
-        </TitleBar>
+            PaneToggleRequested="TitleBar_PaneToggleRequested" />
 
         <NavigationView
             x:Name="NavView"
@@ -45,9 +41,9 @@
                 <StackPanel Margin="16,8,16,12" Spacing="10">
                     <StackPanel Orientation="Horizontal" Spacing="12">
                         <Image
+                            x:Name="NavLogoImage"
                             Width="48"
                             Height="48"
-                            Source="Assets/AppLogo.png"
                             Stretch="Uniform" />
                         <StackPanel Spacing="2" VerticalAlignment="Center">
                             <TextBlock

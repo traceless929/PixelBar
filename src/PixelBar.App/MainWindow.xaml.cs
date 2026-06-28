@@ -2,6 +2,7 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using PixelBar_App.Helpers;
 using PixelBar_App.Pages;
 using PixelBar_App.Services;
 using Windows.UI;
@@ -27,7 +28,13 @@ public sealed partial class MainWindow : Window
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
         AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
-        AppWindow.SetIcon("Assets/AppIcon.ico");
+        var iconPath = AssetImages.GetPath("Assets/AppIcon.ico");
+        AppWindow.SetIcon(iconPath);
+        AppTitleBar.IconSource = new ImageIconSource
+        {
+            ImageSource = AssetImages.LoadBitmap("Assets/AppIcon.ico"),
+        };
+        NavLogoImage.Source = AssetImages.LoadBitmap("Assets/AppLogo.png");
         AppWindow.Closing += OnAppWindowClosing;
 
         ConfigureWindowSize();
