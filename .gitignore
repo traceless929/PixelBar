@@ -95,3 +95,6 @@ Desktop.ini
 
 # Cursor / VS Code (optional local only — launch/tasks 已入库)
 # .vscode/
+
+# CI wiki clone scratch dir (must not live in repo root)
+wiki-repo/
