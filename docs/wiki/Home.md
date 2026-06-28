@@ -7,7 +7,7 @@
 | 页面 | 内容 |
 |------|------|
 | **[路线图](Roadmap)** | 版本里程碑与计划功能 |
-| **[QQ 音乐动态歌词](Lyrics-QQMusic)** | v0.0.2 歌词推送使用指南 |
+| **[QQ 音乐动态歌词](Lyrics-QQMusic)** | QQ 音乐歌词推送使用指南 |
 | **[下载与 Release](Downloads)** | exe / NuGet 该下哪个 |
 | **[SDK 开发](SDK-Development)** | NuGet 安装、快速开始、二次开发 |
 | **[功能支持范围](Features)** | 已实现 vs 未实现 |
@@ -23,4 +23,4 @@
 
 ## 当前版本
 
-**v0.0.2** — 新增 QQ 音乐动态歌词。详见 [Release](https://github.com/traceless929/PixelBar/releases) 与 [变更记录](https://github.com/traceless929/PixelBar/blob/main/CHANGELOG.md)。
+**v0.0.3.1** — 标准安装包 + 便携版；QQ 音乐动态歌词。详见 [Release](https://github.com/traceless929/PixelBar/releases) 与 [变更记录](https://github.com/traceless929/PixelBar/blob/main/CHANGELOG.md)。

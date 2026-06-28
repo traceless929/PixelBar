@@ -37,8 +37,8 @@
 推送标签 `v*.*.*` 触发 [Release 工作流](https://github.com/traceless929/PixelBar/actions/workflows/release.yml)：
 
 ```bash
-git tag v0.0.3
-git push origin v0.0.3
+git tag v0.0.3.1
+git push origin v0.0.3.1
 ```
 
 自动产出：安装包 setup.exe、便携版 portable.exe、CLI exe、SDK nupkg。
