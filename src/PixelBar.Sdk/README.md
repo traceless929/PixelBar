@@ -10,8 +10,26 @@
 
 ## 安装
 
+### 从 GitHub Packages（推荐）
+
+仓库侧边栏 **Packages** 提供 NuGet 源。首次使用需配置源与凭据（Personal Access Token，勾选 `read:packages`）：
+
 ```bash
-# 本地引用（开发）
+dotnet nuget add source "https://nuget.pkg.github.com/traceless929/index.json" `
+  --name github-pixelbar `
+  --username traceless929 `
+  --password YOUR_GITHUB_TOKEN `
+  --store-password-in-clear-text
+
+dotnet add package PixelBar.Sdk --version 0.0.1
+```
+
+也可复制 [`nuget.config.example`](../../nuget.config.example) 为 `nuget.config` 并填入 Token。
+
+### 本地开发
+
+```bash
+# 本地打包目录
 dotnet add package PixelBar.Sdk --source ./nupkg
 
 # 或项目引用

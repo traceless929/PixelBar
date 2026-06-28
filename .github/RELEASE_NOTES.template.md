@@ -6,7 +6,7 @@
 |------|--------|------|
 | **PixelBar.App-v{VERSION}-win-x64.exe** | 普通用户（推荐） | WinUI 图形客户端：文字、灯光、时钟、频谱、屏色、托盘与开机启动。下载后**双击即可运行**，无需安装 .NET。 |
 | **pixelbar-v{VERSION}-win-x64.exe** | 命令行 / 脚本用户 | CLI 工具，在 PowerShell 或 CMD 中使用，例如 `pixelbar text "你好"`、`pixelbar screen-color "#0077EE"`。 |
-| **PixelBar.Sdk.{VERSION}.nupkg** | 开发者 | .NET SDK NuGet 包，可在自有项目中引用，跳过 HID 协议逆向，直接二次开发。 |
+| **PixelBar.Sdk.{VERSION}.nupkg** | 开发者 | .NET SDK NuGet 包。可在 [GitHub Packages](https://github.com/traceless929/PixelBar/packages) 安装，或从此 Release 直接下载。 |
 | **Source code (zip / tar.gz)** | 开发者 / 研究者 | GitHub 自动附带的对应标签源码归档，用于自行编译或阅读实现。 |
 
 ## 使用提示
