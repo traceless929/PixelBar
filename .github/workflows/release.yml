@@ -76,10 +76,18 @@ jobs:
           Copy-Item publish/cli/pixelbar.exe "artifacts/pixelbar-v$v-win-x64.exe"
           Get-ChildItem artifacts -Filter *.exe | Format-Table Name, @{ N = 'MB'; E = { [math]::Round($_.Length / 1MB, 2) } }
 
+      - name: Write release notes
+        shell: pwsh
+        run: |
+          ./.github/scripts/render_release_notes.ps1 `
+            -Version "${{ steps.version.outputs.tag }}" `
+            -OutputPath artifacts/RELEASE_NOTES.md
+          Get-Content artifacts/RELEASE_NOTES.md
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          body_path: artifacts/RELEASE_NOTES.md
           files: |
             artifacts/nupkg/*.nupkg
             artifacts/PixelBar.App-v*-win-x64.exe
