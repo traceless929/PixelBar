@@ -93,9 +93,11 @@ client.ShowSpectrum(1);
 # 开发运行
 dotnet run --project src/PixelBar.Cli -- text "你好世界"
 
-# 发布独立可执行文件
-dotnet publish src/PixelBar.Cli/PixelBar.Cli.csproj -c Release -r win-x64 --self-contained
-# 输出: src/PixelBar.Cli/bin/Release/net10.0-windows/win-x64/publish/pixelbar.exe
+# 发布单文件 exe（与 Release 相同）
+dotnet publish src/PixelBar.Cli/PixelBar.Cli.csproj -c Release -r win-x64 --self-contained `
+  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true `
+  -p:DebugType=None -p:DebugSymbols=false -o publish/cli
+# 输出: publish/cli/pixelbar.exe
 
 pixelbar list
 pixelbar text "你好 PixelBar"
@@ -311,11 +313,30 @@ python hooks/capture_tempohub.py --spawn
 ## 发布与 CI
 
 - **CI**：推送到 `main` 或 PR 时自动 `dotnet build` 并打包 SDK（[`.github/workflows/ci.yml`](.github/workflows/ci.yml)）
-- **Release**：推送标签 `v*.*.*` 时发布 GitHub Release，含 `PixelBar.Sdk` NuGet、`PixelBar.App` / `PixelBar.Cli` win-x64 压缩包（[`.github/workflows/release.yml`](.github/workflows/release.yml)）
+- **Release**：推送标签 `v*.*.*` 时发布 GitHub Release，附件包含：
+  - **`PixelBar.App-v{版本}-win-x64.exe`** — WinUI 图形客户端（单文件，约 120MB，自包含运行时）
+  - **`pixelbar-v{版本}-win-x64.exe`** — CLI 命令行（单文件，约 70MB）
+  - **`PixelBar.Sdk.{版本}.nupkg`** — SDK NuGet 包
+
+  详见 [`.github/workflows/release.yml`](.github/workflows/release.yml)
 
 ```bash
 git tag v1.0.0
 git push origin v1.0.0
+```
+
+下载 Release 后 **双击 exe 即可运行**，无需单独安装 .NET。首次启动 WinUI 客户端若被杀软拦截，请允许运行。
+
+本地打单文件 exe（与 CI 相同参数）：
+
+```powershell
+dotnet publish src/PixelBar.App/PixelBar.App.csproj -c Release -r win-x64 --self-contained `
+  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableMsixTooling=true `
+  -p:DebugType=None -p:DebugSymbols=false -o publish/app
+
+dotnet publish src/PixelBar.Cli/PixelBar.Cli.csproj -c Release -r win-x64 --self-contained `
+  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true `
+  -p:DebugType=None -p:DebugSymbols=false -o publish/cli
 ```
 
 贡献指南：[CONTRIBUTING.md](CONTRIBUTING.md)

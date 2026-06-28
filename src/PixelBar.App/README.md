@@ -31,9 +31,17 @@ python analysis/generate_app_icons.py
 # 开发模式
 dotnet run --project src/PixelBar.App
 
-# 发布独立程序
-dotnet publish src/PixelBar.App/PixelBar.App.csproj -c Release -r win-x64 --self-contained
-# 输出目录: bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/
+# 发布独立程序（单文件 exe，与 GitHub Release 相同）
+
+dotnet publish src/PixelBar.App/PixelBar.App.csproj -c Release -r win-x64 --self-contained `
+  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableMsixTooling=true `
+  -p:DebugType=None -p:DebugSymbols=false -o publish/app
+# 输出: publish/app/PixelBar.App.exe
+
+dotnet publish src/PixelBar.Cli/PixelBar.Cli.csproj -c Release -r win-x64 --self-contained `
+  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true `
+  -p:DebugType=None -p:DebugSymbols=false -o publish/cli
+# 输出: publish/cli/pixelbar.exe
 ```
 
 项目为 **非打包（unpackaged）** 模式，可直接 `dotnet run`，无需开启开发者模式。
