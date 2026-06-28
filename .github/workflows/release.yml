@@ -46,11 +46,15 @@ jobs:
         run: dotnet pack src/PixelBar.Sdk/PixelBar.Sdk.csproj -c Release --no-build -o artifacts/nupkg -p:Version=${{ steps.version.outputs.tag }}
 
       - name: Publish SDK to GitHub Packages
-        run: >
-          dotnet nuget push artifacts/nupkg/*.nupkg
-          --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
-          --api-key "${{ secrets.GITHUB_TOKEN }}"
-          --skip-duplicate
+        shell: pwsh
+        run: |
+          $source = "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          Get-ChildItem artifacts/nupkg/*.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName `
+              --source $source `
+              --api-key "${{ secrets.GITHUB_TOKEN }}" `
+              --skip-duplicate
+          }
 
       - name: Publish PixelBar.App (single-file exe)
         run: >
