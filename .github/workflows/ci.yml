@@ -31,7 +31,7 @@ jobs:
         run: dotnet pack src/PixelBar.Sdk/PixelBar.Sdk.csproj -c Release --no-build -o artifacts/nupkg
 
       - name: Upload SDK package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: PixelBar.Sdk-nupkg
           path: artifacts/nupkg/*.nupkg
