@@ -8,10 +8,17 @@
 
 | 文件 | 适合谁 | 说明 |
 |------|--------|------|
-| **PixelBar.App-v{版本}-win-x64.exe** | 普通用户（推荐） | WinUI 图形客户端。文字、灯光、时钟、频谱、屏色、**QQ 音乐动态歌词**、托盘、开机启动。**双击运行**，无需安装 .NET。 |
+| **PixelBar.App-v{版本}-setup.exe** | 普通用户（推荐） | 标准安装包。含 Windows 版本 / x64 检测与安装引导，开始菜单快捷方式，支持卸载。 |
+| **PixelBar.App-v{版本}-win-x64-portable.exe** | 免安装用户 | 单文件便携版，无需安装。若无法运行，右键 exe → 属性 → **解除锁定**。 |
 | **pixelbar-v{版本}-win-x64.exe** | 命令行 / 脚本 | CLI，例如 `pixelbar text "你好"`、`pixelbar screen-color "#0077EE"`。 |
 | **PixelBar.Sdk.{版本}.nupkg** | 开发者 | SDK NuGet 包；见 [GitHub Packages](https://github.com/traceless929/PixelBar/packages) 或 Release 附件。 |
 | **Source code (zip / tar.gz)** | 开发者 | 对应标签的源码归档，自行编译用。 |
+
+## 系统要求
+
+- Windows 10 1809（build 17763）或更高，**64 位**
+- USB 连接 Halo PixelBar（VID/PID `0x2D99` / `0xA106`）
+- 无需单独安装 .NET（安装包与便携版均已内置运行时）
 
 ## GitHub Packages（SDK）
 
@@ -30,8 +37,10 @@
 推送标签 `v*.*.*` 触发 [Release 工作流](https://github.com/traceless929/PixelBar/actions/workflows/release.yml)：
 
 ```bash
-git tag v0.0.2
-git push origin v0.0.2
+git tag v0.0.3
+git push origin v0.0.3
 ```
 
-自动产出：2 个单文件 exe、SDK nupkg（Release + Packages）。
+自动产出：安装包 setup.exe、便携版 portable.exe、CLI exe、SDK nupkg。
+
+本地构建安装包：`./scripts/build-installer.ps1`（需安装 [Inno Setup 6](https://jrsoftware.org/isdl.php)）。

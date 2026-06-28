@@ -76,11 +76,11 @@
     <ProjectReference Include="..\PixelBar.Sdk\PixelBar.Sdk.csproj" />
   </ItemGroup>
 
-  <!-- Publish Properties -->
+  <!-- WinUI + Windows App SDK 不支持 PublishTrimmed，Release 单文件发布会启动失败 -->
   <PropertyGroup>
     <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
     <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
-    <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
-    <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+    <PublishTrimmed>false</PublishTrimmed>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
   </PropertyGroup>
 </Project>

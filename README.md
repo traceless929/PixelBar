@@ -308,25 +308,27 @@ python hooks/capture_tempohub.py --spawn
 
 - **CI**：推送到 `main` 或 PR 时自动 `dotnet build` 并打包 SDK（[`.github/workflows/ci.yml`](.github/workflows/ci.yml)）
 - **Release**：推送标签 `v*.*.*` 时发布 GitHub Release，附件包含：
-  - **`PixelBar.App-v{版本}-win-x64.exe`** — WinUI 图形客户端（单文件，约 120MB，自包含运行时）
-  - **`pixelbar-v{版本}-win-x64.exe`** — CLI 命令行（单文件，约 70MB）
+  - **`PixelBar.App-v{版本}-setup.exe`** — WinUI 图形客户端安装包（推荐）
+  - **`PixelBar.App-v{版本}-win-x64-portable.exe`** — 便携版单文件 exe
+  - **`pixelbar-v{版本}-win-x64.exe`** — CLI 命令行（单文件）
   - **`PixelBar.Sdk.{版本}.nupkg`** — SDK NuGet 包
 
   详见 [`.github/workflows/release.yml`](.github/workflows/release.yml)
 
 ```bash
-git tag v0.0.2
-git push origin v0.0.2
+git tag v0.0.3
+git push origin v0.0.3
 ```
 
-下载 Release 后 **双击 exe 即可运行**，无需单独安装 .NET。首次启动 WinUI 客户端若被杀软拦截，请允许运行。
+普通用户推荐下载 **setup.exe** 安装；便携版若被 SmartScreen 拦截，请右键「属性 → 解除锁定」。本地构建安装包：`./scripts/build-installer.ps1`（需 [Inno Setup 6](https://jrsoftware.org/isdl.php)）。
 
-本地打单文件 exe（与 CI 相同参数）：
+本地打便携版 exe（与 CI 相同参数）：
 
 ```powershell
 dotnet publish src/PixelBar.App/PixelBar.App.csproj -c Release -r win-x64 --self-contained `
-  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableMsixTooling=true `
-  -p:DebugType=None -p:DebugSymbols=false -o publish/app
+  -p:PublishSingleFile=true -p:PublishTrimmed=false `
+  -p:IncludeNativeLibrariesForSelfExtract=true -p:IncludeAllContentForSelfExtract=true `
+  -p:EnableMsixTooling=true -p:DebugType=None -p:DebugSymbols=false -o publish/app-portable
 
 dotnet publish src/PixelBar.Cli/PixelBar.Cli.csproj -c Release -r win-x64 --self-contained `
   -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true `

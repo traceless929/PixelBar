@@ -10,9 +10,11 @@
 
 |------|--------|------|
 
-| **PixelBar.App-v{VERSION}-win-x64.exe** | 普通用户（推荐） | WinUI 图形客户端：文字、灯光、时钟、频谱、屏色、**QQ 音乐动态歌词**、托盘与开机启动。下载后**双击即可运行**，无需安装 .NET。 |
+| **PixelBar.App-v{VERSION}-setup.exe** | 普通用户（推荐） | 标准安装包：含系统环境检测与安装引导，写入开始菜单，支持卸载。 |
 
-| **pixelbar-v{VERSION}-win-x64.exe** | 命令行 / 脚本用户 | CLI 工具，在 PowerShell 或 CMD 中使用，例如 `pixelbar text "你好"`、`pixelbar screen-color "#0077EE"`。 |
+| **PixelBar.App-v{VERSION}-win-x64-portable.exe** | 免安装 / 高级用户 | 单文件便携版，下载后双击运行；若被 SmartScreen 拦截，请右键「属性 → 解除锁定」。 |
+
+| **pixelbar-v{VERSION}-win-x64.exe** | 命令行 / 脚本用户 | CLI 工具，例如 `pixelbar text "你好"`、`pixelbar screen-color "#0077EE"`。 |
 
 | **PixelBar.Sdk.{VERSION}.nupkg** | 开发者 | .NET SDK NuGet 包。可在 [GitHub Packages](https://github.com/traceless929/PixelBar/packages) 安装，或从此 Release 直接下载。 |
 
@@ -24,9 +26,11 @@
 
 
 
-- **重新同步**：歌词页可手动刷新 qrc 索引与曲目匹配，解决偶发卡住
+- **标准安装包 + 便携版**：安装包含环境检测与使用引导；便携版免安装
 
-- **自动检测**：先开 PixelBar 后开 QQ 音乐时，后台约每秒轮询，无需重启应用
+- **修复 App 无法启动**：v0.0.2 / v0.0.2.1 单文件 exe 已不可用，请使用本版
+
+- 含歌词 **重新同步** 与 QQ 音乐后台自动检测
 
 
 
@@ -50,9 +54,8 @@
 
 
 
-https://github.com/traceless929/PixelBar/blob/main/CHANGELOG.md#0021---2026-06-28
+https://github.com/traceless929/PixelBar/blob/main/CHANGELOG.md#003---2026-06-28
 
 
 
 完整提交：https://github.com/traceless929/PixelBar/commits/v{VERSION}
-

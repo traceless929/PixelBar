@@ -56,17 +56,31 @@ jobs:
               --skip-duplicate
           }
 
-      - name: Publish PixelBar.App (single-file exe)
+      - name: Publish PixelBar.App (folder, for installer)
+        run: >
+          dotnet publish src/PixelBar.App/PixelBar.App.csproj
+          -c Release -r win-x64 --self-contained
+          -p:Version=${{ steps.version.outputs.tag }}
+          -p:PublishSingleFile=false
+          -p:PublishTrimmed=false
+          -p:EnableMsixTooling=true
+          -p:DebugType=None
+          -p:DebugSymbols=false
+          -o publish/app-install
+
+      - name: Publish PixelBar.App (single-file portable)
         run: >
           dotnet publish src/PixelBar.App/PixelBar.App.csproj
           -c Release -r win-x64 --self-contained
           -p:Version=${{ steps.version.outputs.tag }}
           -p:PublishSingleFile=true
+          -p:PublishTrimmed=false
           -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:IncludeAllContentForSelfExtract=true
           -p:EnableMsixTooling=true
           -p:DebugType=None
           -p:DebugSymbols=false
-          -o publish/app
+          -o publish/app-portable
 
       - name: Publish pixelbar CLI (single-file exe)
         run: >
@@ -79,12 +93,22 @@ jobs:
           -p:DebugSymbols=false
           -o publish/cli
 
-      - name: Stage release executables
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $v = "${{ steps.version.outputs.tag }}"
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          & $iscc installer\PixelBar.iss "/DMyAppVersion=$v" "/DPublishDir=$PWD\publish\app-install"
+
+      - name: Stage release artifacts
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path artifacts | Out-Null
           $v = "${{ steps.version.outputs.tag }}"
-          Copy-Item publish/app/PixelBar.App.exe "artifacts/PixelBar.App-v$v-win-x64.exe"
+          Copy-Item publish/app-portable/PixelBar.App.exe "artifacts/PixelBar.App-v$v-win-x64-portable.exe"
           Copy-Item publish/cli/pixelbar.exe "artifacts/pixelbar-v$v-win-x64.exe"
           Get-ChildItem artifacts -Filter *.exe | Format-Table Name, @{ N = 'MB'; E = { [math]::Round($_.Length / 1MB, 2) } }
 
@@ -102,5 +126,6 @@ jobs:
           body_path: artifacts/RELEASE_NOTES.md
           files: |
             artifacts/nupkg/*.nupkg
-            artifacts/PixelBar.App-v*-win-x64.exe
+            artifacts/PixelBar.App-v*-setup.exe
+            artifacts/PixelBar.App-v*-win-x64-portable.exe
             artifacts/pixelbar-v*-win-x64.exe

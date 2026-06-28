@@ -2,6 +2,20 @@
 
 本文件记录各版本的显著变更。完整提交历史见 GitHub。
 
+## [0.0.3] - 2026-06-28
+
+### 新增
+
+- **标准安装包**（Inno Setup）：`PixelBar.App-v{版本}-setup.exe`
+  - 安装前检测 Windows 10 1809+ 与 x64 架构
+  - 自定义安装引导页（TempoHub、USB 连接、设备选择说明）
+  - 开始菜单 / 可选桌面快捷方式、卸载入口
+- **便携版**单文件 exe：`PixelBar.App-v{版本}-win-x64-portable.exe`（免安装）
+
+### 修复
+
+- **修复 Release 版 PixelBar.App 无法启动**：关闭 `PublishTrimmed`（WinUI 不支持裁剪发布），便携版启用 `IncludeAllContentForSelfExtract`
+
 ## [0.0.2.1] - 2026-06-28
 
 ### 改进
@@ -35,6 +49,7 @@
 - 托盘、开机启动、首次使用引导
 - GitHub Actions CI / Release 工作流
 
+[0.0.3]: https://github.com/traceless929/PixelBar/compare/v0.0.2.1...v0.0.3
 [0.0.2.1]: https://github.com/traceless929/PixelBar/compare/v0.0.2...v0.0.2.1
 [0.0.2]: https://github.com/traceless929/PixelBar/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/traceless929/PixelBar/releases/tag/v0.0.1
