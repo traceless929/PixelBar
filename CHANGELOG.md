@@ -2,6 +2,14 @@
 
 本文件记录各版本的显著变更。完整提交历史见 GitHub。
 
+## [0.0.2.1] - 2026-06-28
+
+### 改进
+
+- 歌词页新增 **重新同步** 按钮：清空 qrc 索引与当前曲目状态，强制重新匹配
+- 开启推送后后台约每秒检测 QQ 音乐；先开 PixelBar 后开 QQ 音乐也会自动接上
+- 等待状态文案改为「等待 QQ 音乐…（后台自动检测）」
+
 ## [0.0.2] - 2026-06-28
 
 ### 新增
@@ -27,5 +35,6 @@
 - 托盘、开机启动、首次使用引导
 - GitHub Actions CI / Release 工作流
 
+[0.0.2.1]: https://github.com/traceless929/PixelBar/compare/v0.0.2...v0.0.2.1
 [0.0.2]: https://github.com/traceless929/PixelBar/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/traceless929/PixelBar/releases/tag/v0.0.1

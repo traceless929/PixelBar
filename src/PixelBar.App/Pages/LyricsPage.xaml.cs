@@ -127,6 +127,18 @@ public sealed partial class LyricsPage : Page
     private async void OpenWikiButton_Click(object sender, RoutedEventArgs e) =>
         await Launcher.LaunchUriAsync(new Uri("https://github.com/traceless929/PixelBar/wiki/Lyrics-QQMusic"));
 
+    private void ResyncButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (!EnableSwitch.IsOn)
+            return;
+
+        LyricsSyncService.Instance.RequestResync();
+        if (!PixelBarService.Instance.HasSelectedDevice)
+            UiFeedback.Show(StatusBar, InfoBarSeverity.Warning, "尚未选择 PixelBar 设备，请先在设置中连接。");
+        else
+            UiFeedback.Show(StatusBar, InfoBarSeverity.Informational, "已触发重新同步，请确保 QQ 音乐正在播放。");
+    }
+
     private void OnLyricsStatusChanged(object? sender, LyricsSyncStatusEvent e) =>
         DispatcherQueue.TryEnqueue(() => RefreshStatus(
             e.Status,
@@ -147,7 +159,7 @@ public sealed partial class LyricsPage : Page
         StateText.Text = status switch
         {
             LyricsSyncStatus.Idle => "未启用",
-            LyricsSyncStatus.WaitingForQqMusic => "等待 QQ 音乐播放…",
+            LyricsSyncStatus.WaitingForQqMusic => "等待 QQ 音乐…（后台自动检测）",
             LyricsSyncStatus.Paused => "QQ 音乐已暂停",
             LyricsSyncStatus.PlayingWithLyrics => "正在推送歌词",
             LyricsSyncStatus.PlayingFallback => "正在推送（未匹配到歌词，显示歌名）",

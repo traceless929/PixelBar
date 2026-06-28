@@ -36,7 +36,16 @@ public sealed partial class QqMusicLyricProvider
 
     public int DecryptedCacheFileCount => QqMusicLyricCacheStore.CountCachedEntries();
 
+    public void InvalidateIndex()
+    {
+        lock (_indexLock)
+        {
+            _indexBuiltAt = DateTime.MinValue;
+            _index = [];
+        }
 
+        _cache.Clear();
+    }
 
     public LrcDocument? TryFindLyrics(string title, string artist, string? customDirectory)
 

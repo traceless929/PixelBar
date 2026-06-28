@@ -93,7 +93,7 @@
                                 <TextBlock
                                     VerticalAlignment="Center"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="下方开启「启用歌词推送」，观察运行状态是否变为「正在推送歌词」。"
+                                    Text="下方开启「启用歌词推送」；若先开 PixelBar 后开 QQ 音乐，一般会自动检测，也可点「重新同步」。"
                                     TextWrapping="Wrap" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Spacing="12">
@@ -149,6 +149,18 @@
                             OffContent="关闭"
                             OnContent="开启"
                             Toggled="EnableSwitch_Toggled" />
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            FontSize="12"
+                            Text="开启后后台约每秒检测 QQ 音乐；先开 PixelBar 再开 QQ 音乐也会自动接上，无需重启应用。"
+                            TextWrapping="Wrap" />
+
+                        <Button
+                            x:Name="ResyncButton"
+                            Click="ResyncButton_Click"
+                            Content="重新同步"
+                            HorizontalAlignment="Left"
+                            IsEnabled="{Binding ElementName=EnableSwitch, Path=IsOn}" />
 
                         <ToggleSwitch
                             x:Name="ScrollSwitch"

@@ -26,7 +26,7 @@ public sealed class LyricsSyncService
 
     private Task? _loopTask;
 
-
+    private int _resyncVersion;
 
     public event EventHandler<LyricsSyncStatusEvent>? StatusChanged;
 
@@ -122,6 +122,15 @@ public sealed class LyricsSyncService
 
     }
 
+    /// <summary>清空歌词索引并强制下一轮重新匹配 QQ 音乐与 qrc 缓存。</summary>
+    public void RequestResync()
+    {
+        _qqLyricProvider.InvalidateIndex();
+        Interlocked.Increment(ref _resyncVersion);
+        if (AppSettingsService.Instance.Current.LyricsEnabled)
+            Start();
+    }
+
 
 
     private async Task RunLoopAsync(CancellationToken cancellationToken)
@@ -136,6 +145,8 @@ public sealed class LyricsSyncService
 
         string? lastSentLine = null;
 
+        var consumedResyncVersion = Volatile.Read(ref _resyncVersion);
+
 
 
         while (!cancellationToken.IsCancellationRequested)
@@ -147,6 +158,24 @@ public sealed class LyricsSyncService
             {
 
                 var settings = AppSettingsService.Instance.Current;
+
+                var resyncVersion = Volatile.Read(ref _resyncVersion);
+
+                if (resyncVersion != consumedResyncVersion)
+
+                {
+
+                    consumedResyncVersion = resyncVersion;
+
+                    trackKey = null;
+
+                    document = null;
+
+                    documentSource = LyricSource.None;
+
+                    lastSentLine = null;
+
+                }
 
                 var playback = await _monitor.TryGetQqMusicPlaybackAsync(cancellationToken).ConfigureAwait(false);
 
