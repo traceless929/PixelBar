@@ -11,6 +11,7 @@
 | 像素屏 · 时钟 | 11 种固件内置样式 |
 | 像素屏 · 频谱 | 4 种实时频谱样式 |
 | 像素屏 · 颜色 | 主题色调（HEX/RGB，已抓包验证） |
+| **动态歌词** | QQ 音乐：本地 qrc 解密、进度同步、时间偏移、长句滚动 |
 | 设置 | 设备选择、连接状态、开机启动、托盘行为 |
 
 ## 系统要求
@@ -81,6 +82,15 @@ dotnet publish src/PixelBar.Cli/PixelBar.Cli.csproj -c Release -r win-x64 --self
 - **时钟** / **频谱**：点击卡片即可切换
 - **颜色**：色盘或快捷预设，点击 **应用颜色**
 
+### 7. 动态歌词（QQ 音乐 · v0.0.2+）
+
+1. **关闭 TempoHub**，在设置中连接 PixelBar
+2. 用 QQ 音乐播放歌曲（生成 `QQMusicLyricNew` 缓存）
+3. 打开 **动态歌词** 页，按引导开启 **启用歌词推送**
+4. 不同步时调整 **时间偏移**；长句可开滚动并选方向
+
+详细说明：[Wiki · QQ 音乐动态歌词](https://github.com/traceless929/PixelBar/wiki/Lyrics-QQMusic)
+
 ## 界面结构
 
 ```
@@ -91,6 +101,7 @@ PixelBar
 │   ├── 时钟
 │   ├── 频谱
 │   └── 颜色
+├── 动态歌词
 └── 设置
 ```
 
@@ -114,7 +125,7 @@ PixelBar.App/
 - 自创空间图片/动画（`0x17` 帧上传）
 - 热点新闻、天气预报
 
-计划中的功能（RGB 神光同步、QQ 音乐/网易云等动态歌词等）见 [项目路线图](../../README.md#路线图)。相关扩展建议优先基于 [`PixelBar.Sdk`](../PixelBar.Sdk/README.md) 实现，无需自行处理协议层。
+计划中的功能（RGB 神光同步、网易云歌词等）见 [Wiki · 路线图](https://github.com/traceless929/PixelBar/wiki/Roadmap)。QQ 音乐歌词已内置，见 [Wiki · 歌词指南](https://github.com/traceless929/PixelBar/wiki/Lyrics-QQMusic)。
 
 ## 故障排除
 
@@ -122,6 +133,8 @@ PixelBar.App/
 |------|------|
 | 设置中找不到设备 | 检查 USB、重新插拔；关闭 TempoHub 后重试 |
 | 发送失败 | 确认侧栏显示「已连接」；到设置重新选择设备 |
+| 推送失败 / 无反应 | 关闭 TempoHub；在设置中重新选择设备 |
+| 歌词不显示 | 先播放歌曲生成 qrc；见 [Wiki 故障排除](https://github.com/traceless929/PixelBar/wiki/Lyrics-QQMusic#故障排除) |
 | 构建时 DLL 被锁定 | 关闭正在运行的 PixelBar.App 后重新编译 |
 
 ## 相关文档
@@ -130,3 +143,4 @@ PixelBar.App/
 - [免责声明](../../README.md#免责声明)
 - [SDK 开发文档](../PixelBar.Sdk/README.md)
 - [CLI 命令行](../PixelBar.Cli/Program.cs)（`pixelbar` 工具）
+- [变更记录](../../CHANGELOG.md)

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\PixelBar.App\Services\Lyrics\QmQrcDecoder.cs" Link="QmQrcDecoder.cs" />
+    <Compile Include="..\..\src\PixelBar.App\Services\Lyrics\QmQrcDes.cs" Link="QmQrcDes.cs" />
+  </ItemGroup>
+</Project>

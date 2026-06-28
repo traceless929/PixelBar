@@ -5,6 +5,8 @@
 
 逆向工程漫步者花再 **Halo PixelBar** 的 HID 协议，提供 **WinUI 桌面客户端**、**命令行工具** 与 **.NET SDK**。
 
+📖 **[项目 Wiki](https://github.com/traceless929/PixelBar/wiki)** · [动态歌词](https://github.com/traceless929/PixelBar/wiki/Lyrics-QQMusic) · [路线图](https://github.com/traceless929/PixelBar/wiki/Roadmap) · [下载 Release](https://github.com/traceless929/PixelBar/wiki/Downloads) · [SDK 开发](https://github.com/traceless929/PixelBar/wiki/SDK-Development)
+
 **PixelBar.Sdk 面向开发者开放**：协议细节与校验和已由 SDK 封装，你无需重复抓包、拼包，可直接引用 API 做插件、自动化、桌面工具或与其他软件联动。欢迎基于 SDK 二次开发，共建 PixelBar 周边生态。
 
 官方配套软件：
@@ -20,7 +22,7 @@
 dotnet run --project src/PixelBar.App
 ```
 
-打开 **设置** 选择设备后，即可使用文字、灯光、时钟、频谱、屏色等功能。详见 [`src/PixelBar.App/README.md`](src/PixelBar.App/README.md)。
+打开 **设置** 选择设备后，即可使用文字、灯光、时钟、频谱、屏色等功能；**v0.0.2** 起支持 [QQ 音乐动态歌词](https://github.com/traceless929/PixelBar/wiki/Lyrics-QQMusic)。详见 [`src/PixelBar.App/README.md`](src/PixelBar.App/README.md)。
 
 ### 命令行
 
@@ -192,24 +194,16 @@ dotnet run --project src/PixelBar.Cli -- text "滚动文字" --scroll rtl
 | 时钟 1–11 | ✅ | ✅ |
 | 频谱 1–4 | ✅ | ✅ |
 | 像素屏主题色 | ✅ | ✅ |
+| QQ 音乐动态歌词 | — | ✅ |
 | 游戏/宠物/0x17 模板 | ❌ | ❌ |
 
 **不支持的像素屏样式**（游戏、办公、阅读、宠物、表情包、赛博等，以及 TempoHub 新版 EF 时钟、自创空间图片）：须通过官方 **EDIFIER TempoHub / Connect** 上位机经 `0x17` 协议上传帧数据，本项目不实现该流程。
 
 ## 路线图
 
-以下为计划中的功能，**尚未实现**；优先级与实现方式可能随逆向进展调整。欢迎 Issue / PR 参与；也鼓励开发者**直接基于 SDK** 先行实现原型（如歌词插件、神光同步桥接），成熟后再合入主线。
+**v0.0.2** 已落地 **QQ 音乐动态歌词**（见 [Wiki · 歌词指南](https://github.com/traceless929/PixelBar/wiki/Lyrics-QQMusic)）。后续计划（神光同步、网易云歌词、0x17 协议等）详见 **[Wiki · 路线图](https://github.com/traceless929/PixelBar/wiki/Roadmap)**。欢迎 Issue / PR，或基于 SDK 先做原型再合入主线。
 
-| 方向 | 目标 | 说明 |
-|------|------|------|
-| **RGB 神光同步** | 氛围灯与 PC 灯效生态联动 | 对接主板/外设 RGB 生态（如华硕 **Aura Sync（神光同步）**、微星 Mystic Light、技嘉 RGB Fusion 等），将系统/游戏/屏幕取色同步到 PixelBar 氛围灯，或与 TempoHub 现有灯效策略对齐 |
-| **动态歌词** | 像素屏显示正在播放的歌词 | 接入常见音乐客户端，读取当前曲目与歌词进度并在 PixelBar 上滚动/逐字显示；优先调研 **QQ 音乐**、**网易云音乐** 等 Windows 版的窗口标题、媒体会话（SMTC）、插件或公开接口 |
-| 协议补全 | 游戏/宠物/0x17 模板 | 依赖对 TempoHub `0x17` 帧上传流程的进一步逆向 |
-| 体验优化 | 托盘、启动项、引导 | 持续迭代（部分已在桌面客户端落地） |
-
-**动态歌词** 预期链路（草案）：音乐播放器 → 歌词与时间轴 → PixelBar 文字/布局协议 → 像素屏；需处理各播放器差异、无歌词 fallback、与 TempoHub 同时占用 HID 时的互斥等问题。
-
-**神光同步** 预期链路（草案）：系统 RGB 源（Aura SDK / 屏幕取色 / 游戏钩子）→ 统一颜色与模式映射 → PixelBar RGB 灯光包（`0x6B`）；具体以各厂商 SDK 可用性与授权为准。
+变更记录：[CHANGELOG.md](CHANGELOG.md)
 
 桌面客户端专项说明见 [`src/PixelBar.App/README.md`](src/PixelBar.App/README.md)。
 
@@ -321,8 +315,8 @@ python hooks/capture_tempohub.py --spawn
   详见 [`.github/workflows/release.yml`](.github/workflows/release.yml)
 
 ```bash
-git tag v0.0.1
-git push origin v0.0.1
+git tag v0.0.2
+git push origin v0.0.2
 ```
 
 下载 Release 后 **双击 exe 即可运行**，无需单独安装 .NET。首次启动 WinUI 客户端若被杀软拦截，请允许运行。
@@ -340,3 +334,11 @@ dotnet publish src/PixelBar.Cli/PixelBar.Cli.csproj -c Release -r win-x64 --self
 ```
 
 贡献指南：[CONTRIBUTING.md](CONTRIBUTING.md)
+
+## 鸣谢
+
+部分功能参考或移植了社区开源实现，详见 **[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)**。
+
+| 项目 | 许可证 | 在本项目中的用途 |
+|------|--------|------------------|
+| [jixunmoe-go/qrc](https://github.com/jixunmoe-go/qrc) | MIT | QQ 音乐本地 `*_qm.qrc` 解密（`QmQrcDecoder` / `QmQrcDes`） |

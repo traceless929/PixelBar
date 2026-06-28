@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using PixelBar_App.Services;
+using PixelBar_App.Services.Lyrics;
 
 namespace PixelBar_App;
 
@@ -26,6 +27,8 @@ public partial class App : Application
             MainWindowInstance.HideToTray(showNotification: false);
         else
             MainWindowInstance.Activate();
+
+        LyricsSyncService.Instance.ApplySettings();
     }
 
     private static bool ShouldStartInTray(string? arguments)

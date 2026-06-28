@@ -178,6 +178,7 @@ public sealed partial class MainWindow : Window
         {
             "text" => typeof(HomePage),
             "light" => typeof(LightPage),
+            "lyrics" => typeof(LyricsPage),
             "clock" => typeof(ClockPage),
             "spectrum" => typeof(PatternPage),
             "screen-color" => typeof(ScreenColorPage),

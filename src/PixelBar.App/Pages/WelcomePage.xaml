@@ -89,7 +89,7 @@
                                 <TextBlock Style="{StaticResource SectionLabelStyle}" Text="探索功能" />
                                 <TextBlock
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="文字 · 氛围灯光 · 像素屏（时钟 / 频谱 / 主题色）。左侧导航可随时切换。"
+                                    Text="文字 · 氛围灯光 · 像素屏（时钟 / 频谱 / 主题色）· 动态歌词（QQ 音乐）。左侧导航可随时切换。"
                                     TextWrapping="Wrap" />
                             </StackPanel>
                         </StackPanel>

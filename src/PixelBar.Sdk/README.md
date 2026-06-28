@@ -21,7 +21,7 @@ dotnet nuget add source "https://nuget.pkg.github.com/traceless929/index.json" `
   --password YOUR_GITHUB_TOKEN `
   --store-password-in-clear-text
 
-dotnet add package PixelBar.Sdk --version 0.0.1
+dotnet add package PixelBar.Sdk --version 0.0.2
 ```
 
 也可复制 [`nuget.config.example`](../../nuget.config.example) 为 `nuget.config` 并填入 Token。

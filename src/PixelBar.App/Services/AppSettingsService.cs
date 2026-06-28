@@ -79,4 +79,20 @@ public sealed class AppSettingsService
         Current.HasCompletedWelcome = false;
         Save(Current);
     }
+
+    public void UpdateLyricsSettings(
+        bool enabled,
+        bool scrollLongLines,
+        int timingOffsetMs,
+        bool scrollRightToLeft,
+        string? lyricDirectory)
+    {
+        Current.LyricsEnabled = enabled;
+        Current.LyricsScrollLongLines = scrollLongLines;
+        Current.LyricsTimingOffsetMs = timingOffsetMs;
+        Current.LyricsScrollRightToLeft = scrollRightToLeft;
+        Current.QqMusicLyricDirectory = string.IsNullOrWhiteSpace(lyricDirectory) ? null : lyricDirectory.Trim();
+        Save(Current);
+        Lyrics.LyricsSyncService.Instance.ApplySettings();
+    }
 }

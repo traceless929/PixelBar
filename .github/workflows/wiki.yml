@@ -1,0 +1,40 @@
+name: Wiki
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/wiki/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync docs/wiki to GitHub Wiki
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          WIKI_URL="https://${GITHUB_TOKEN}@github.com/${{ github.repository }}.wiki.git"
+          if ! git clone "$WIKI_URL" wiki-repo 2>/dev/null; then
+            echo "::warning::Wiki 仓库尚未初始化。请在 GitHub 网页 Wiki 中创建第一页后再重试。"
+            echo "https://github.com/${{ github.repository }}/wiki/_new"
+            exit 0
+          fi
+          rsync -av --delete --exclude README.md docs/wiki/ wiki-repo/
+          cd wiki-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git status --porcelain | grep -q .; then
+            git add -A
+            git commit -m "docs: sync wiki from docs/wiki (${{ github.sha }})"
+            git push
+          else
+            echo "Wiki already up to date."
+          fi

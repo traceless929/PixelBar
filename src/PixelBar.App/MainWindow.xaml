@@ -99,6 +99,11 @@
                         <FontIcon Glyph="&#xE706;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem Content="动态歌词" Tag="lyrics">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE8B1;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem Content="像素屏">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE7F4;" />
