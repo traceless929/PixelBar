@@ -321,8 +321,8 @@ python hooks/capture_tempohub.py --spawn
   详见 [`.github/workflows/release.yml`](.github/workflows/release.yml)
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v0.0.1
+git push origin v0.0.1
 ```
 
 下载 Release 后 **双击 exe 即可运行**，无需单独安装 .NET。首次启动 WinUI 客户端若被杀软拦截，请允许运行。

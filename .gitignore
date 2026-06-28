@@ -30,6 +30,7 @@ project.fragment.lock.json
 artifacts/
 nupkg/
 publish/
+publish-test/
 
 # .NET outputs (keep source assets)
 *.dll
