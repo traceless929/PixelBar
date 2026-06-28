@@ -17,11 +17,7 @@ if (Test-Path $Temp) {
 
 git clone $WikiUrl $Temp
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path (Join-Path $Temp ".git"))) {
-    throw @"
-Wiki 仓库尚未初始化。请先在 GitHub 网页创建第一页：
-  https://github.com/traceless929/PixelBar/wiki/_new
-标题填 Home，内容随意保存即可。然后再运行本脚本。
-"@
+    throw "Wiki repo not initialized. Create first page at https://github.com/traceless929/PixelBar/wiki/_new then retry."
 }
 
 Copy-Item -Path (Join-Path $Source "*") -Destination $Temp -Force

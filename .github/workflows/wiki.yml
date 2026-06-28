@@ -29,7 +29,7 @@ jobs:
             echo "https://github.com/${{ github.repository }}/wiki/_new"
             exit 0
           fi
-          rsync -av --delete --exclude README.md docs/wiki/ "$WIKI_DIR/"
+          rsync -av --delete --exclude README.md --exclude .git docs/wiki/ "$WIKI_DIR/"
           cd "$WIKI_DIR"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
