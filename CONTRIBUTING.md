@@ -9,7 +9,7 @@
 - （可选）Python 3.8+：`pip install -r requirements-dev.txt`（逆向抓包 / 图标生成）
 
 ```bash
-git clone https://github.com/PixelBar-Project/PixelBar.git
+git clone https://github.com/traceless929/PixelBar.git
 cd PixelBar
 dotnet build PixelBar.slnx -c Release
 dotnet run --project src/PixelBar.App

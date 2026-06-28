@@ -1,6 +1,6 @@
 # 花再 Halo PixelBar 自定义控制
 
-[![CI](https://github.com/PixelBar-Project/PixelBar/actions/workflows/ci.yml/badge.svg)](https://github.com/PixelBar-Project/PixelBar/actions/workflows/ci.yml)
+[![CI](https://github.com/traceless929/PixelBar/actions/workflows/ci.yml/badge.svg)](https://github.com/traceless929/PixelBar/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 逆向工程漫步者花再 **Halo PixelBar** 的 HID 协议，提供 **WinUI 桌面客户端**、**命令行工具** 与 **.NET SDK**。

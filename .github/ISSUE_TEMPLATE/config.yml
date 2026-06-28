@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
   - name: 贡献指南
-    url: https://github.com/PixelBar-Project/PixelBar/blob/main/CONTRIBUTING.md
+    url: https://github.com/traceless929/PixelBar/blob/main/CONTRIBUTING.md
     about: 开发环境与 PR 规范
   - name: 路线图
-    url: https://github.com/PixelBar-Project/PixelBar/blob/main/README.md#路线图
+    url: https://github.com/traceless929/PixelBar/blob/main/README.md#路线图
     about: 计划中的功能（神光同步、动态歌词等）
