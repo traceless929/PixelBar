@@ -1,0 +1,96 @@
+# Build / IDE
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+.vs/
+*.user
+*.userosscache
+*.suo
+*.cache
+*.dbmdl
+*.jfm
+*.pfx
+*.publishsettings
+*.DotSettings.user
+
+# NuGet / packages
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+nupkg/
+publish/
+
+# .NET outputs (keep source assets)
+*.dll
+*.exe
+*.pdb
+*.runtimeconfig.json
+*.deps.json
+!**/Assets/**/*.ico
+!**/Assets/**/*.png
+
+# WinUI / MSIX intermediates
+*.pri.xml
+*.pri.resfiles*
+*.xbf
+*.appx*
+*.msix*
+*.build.appxrecipe
+*.AppxManifest.xml
+*.appinstaller
+*.msixbundle
+*.msixupload
+*.publishproj
+*.pubxml.user
+
+# Test / coverage
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Capture logs (local reverse-engineering output)
+capture/*.txt
+capture/*.pcap
+capture/usb_log.txt
+!capture/.gitkeep
+
+# Local TempoHub path overrides
+analysis/tempohub_config_local.py
+
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*~
+.idea/
+*.sublime-*
+
+# Cursor / VS Code (optional local only — launch/tasks 已入库)
+# .vscode/

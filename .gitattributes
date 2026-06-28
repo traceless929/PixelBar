@@ -1,0 +1,11 @@
+* text=auto eol=lf
+*.cs     text diff=csharp
+*.xaml   text
+*.py     text diff=python
+*.md     text
+*.json   text
+*.yml    text
+*.yaml   text
+*.png    binary
+*.ico    binary
+*.jpg    binary

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>PixelBar.Cli</RootNamespace>
+    <AssemblyName>pixelbar</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Description>花再 Halo PixelBar 命令行工具（基于 PixelBar.Sdk）。</Description>
+    <PackageId>PixelBar.Cli</PackageId>
+    <PackageTags>pixelbar;edifier;cli</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PixelBar.Sdk\PixelBar.Sdk.csproj" />
+  </ItemGroup>
+
+</Project>

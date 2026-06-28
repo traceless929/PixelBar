@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Authors>PixelBar Contributors</Authors>
+    <Company>PixelBar</Company>
+    <Copyright>Copyright © PixelBar Contributors</Copyright>
+    <RepositoryUrl>https://github.com/PixelBar-Project/PixelBar</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/PixelBar-Project/PixelBar</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+</Project>

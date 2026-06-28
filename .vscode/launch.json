@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "PixelBar.App",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/PixelBar.App/bin/Debug/net10.0-windows10.0.26100.0/win-x64/PixelBar.App.dll",
+      "cwd": "${workspaceFolder}/src/PixelBar.App",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": "PixelBar.Cli",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/PixelBar.Cli/bin/Debug/net10.0-windows/PixelBar.Cli.dll",
+      "args": ["dry-run", "text", "Hello PixelBar"],
+      "cwd": "${workspaceFolder}/src/PixelBar.Cli",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach"
+    }
+  ]
+}

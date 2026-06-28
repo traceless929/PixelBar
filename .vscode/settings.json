@@ -1,0 +1,12 @@
+{
+  "dotnet.defaultSolution": "PixelBar.slnx",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 4,
+  "files.exclude": {
+    "**/bin": true,
+    "**/obj": true
+  },
+  "[csharp]": {
+    "editor.defaultFormatter": "anysphere.csharp"
+  }
+}

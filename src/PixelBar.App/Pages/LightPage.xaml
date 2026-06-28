@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="PixelBar_App.Pages.LightPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:PixelBar_App.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid
+            MaxWidth="{StaticResource AppContentMaxWidth}"
+            Padding="{StaticResource AppPagePadding}"
+            HorizontalAlignment="Center">
+            <StackPanel Spacing="20">
+                <controls:PageHeader
+                    Subtitle="控制 Halo 氛围灯环。模式 1–2 支持调节速度，其余模式为固定灯效。"
+                    Title="灯光" />
+
+                <InfoBar
+                    x:Name="StatusBar"
+                    IsOpen="False"
+                    IsClosable="True" />
+
+                <Border Style="{StaticResource SectionCardStyle}">
+                    <StackPanel Spacing="16">
+                        <ComboBox
+                            x:Name="ModeBox"
+                            Header="灯效模式"
+                            HorizontalAlignment="Stretch"
+                            SelectedIndex="2"
+                            SelectionChanged="ModeBox_SelectionChanged" />
+
+                        <StackPanel Spacing="8">
+                            <TextBlock Style="{StaticResource SectionLabelStyle}" Text="灯光颜色" />
+                            <ColorPicker
+                                x:Name="ColorPicker"
+                                ColorSpectrumShape="Ring"
+                                IsColorChannelTextInputVisible="False"
+                                IsColorPreviewVisible="True"
+                                IsColorSliderVisible="True"
+                                IsHexInputVisible="True"
+                                IsMoreButtonVisible="False" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="SpeedCard" Style="{StaticResource SectionCardStyle}">
+                    <StackPanel Spacing="12">
+                        <StackPanel Spacing="4">
+                            <TextBlock Style="{StaticResource SectionLabelStyle}" Text="变化速度" />
+                            <TextBlock
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="仅「氛围呼吸」「幻彩潮汐」可调"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                        <Slider
+                            x:Name="SpeedSlider"
+                            Maximum="16"
+                            Minimum="1"
+                            StepFrequency="1"
+                            TickFrequency="1"
+                            Value="16" />
+                        <TextBlock
+                            HorizontalAlignment="Right"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="{Binding ElementName=SpeedSlider, Path=Value, Mode=OneWay}" />
+                    </StackPanel>
+                </Border>
+
+                <Button
+                    x:Name="ApplyButton"
+                    Click="ApplyButton_Click"
+                    Content="应用灯光"
+                    Style="{StaticResource PrimaryActionButtonStyle}" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

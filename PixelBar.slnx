@@ -1,0 +1,18 @@
+<Solution>
+
+  <Folder Name="/src/">
+
+    <Project Path="src/PixelBar.App/PixelBar.App.csproj">
+
+      <Platform Project="x64" />
+
+    </Project>
+
+    <Project Path="src/PixelBar.Cli/PixelBar.Cli.csproj" />
+
+    <Project Path="src/PixelBar.Sdk/PixelBar.Sdk.csproj" />
+
+  </Folder>
+
+</Solution>
+

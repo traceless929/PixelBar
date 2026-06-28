@@ -1,0 +1,28 @@
+name: Feature request
+description: 功能建议或生态集成想法
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 使用场景
+      description: 你想解决什么问题？
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: 建议方案
+      description: 是否考虑基于 PixelBar.Sdk 独立实现？
+  - type: checkboxes
+    id: area
+    attributes:
+      label: 相关领域
+      options:
+        - label: SDK / 协议
+        - label: WinUI 客户端
+        - label: CLI
+        - label: RGB 神光同步
+        - label: 动态歌词 / 音乐播放器
+        - label: 文档 / CI

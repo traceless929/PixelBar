@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="PixelBar_App.Pages.WelcomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:PixelBar_App.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid
+            MaxWidth="{StaticResource AppContentMaxWidth}"
+            Padding="{StaticResource AppPagePadding}"
+            HorizontalAlignment="Center">
+            <StackPanel Spacing="24">
+                <StackPanel HorizontalAlignment="Center" Spacing="16">
+                    <Image
+                        Width="112"
+                        Height="112"
+                        HorizontalAlignment="Center"
+                        Source="Assets/AppLogo.png"
+                        Stretch="Uniform" />
+                    <controls:PageHeader
+                        Subtitle="第三方 Halo PixelBar 控制客户端。按下面步骤连接设备，即可开始使用文字、灯光与像素屏功能。"
+                        Title="欢迎使用 PixelBar" />
+                </StackPanel>
+
+                <Border Style="{StaticResource SectionCardStyle}">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border
+                                Width="32"
+                                Height="32"
+                                Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                CornerRadius="16">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontWeight="SemiBold"
+                                    Foreground="White"
+                                    Text="1" />
+                            </Border>
+                            <StackPanel Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Style="{StaticResource SectionLabelStyle}" Text="连接设备" />
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="USB 连接 PixelBar，在 Windows 中确认设备已被识别。"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border
+                                Width="32"
+                                Height="32"
+                                Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                CornerRadius="16">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontWeight="SemiBold"
+                                    Foreground="White"
+                                    Text="2" />
+                            </Border>
+                            <StackPanel Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Style="{StaticResource SectionLabelStyle}" Text="选择 HID 端点" />
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="打开「设置」，点击刷新并在列表中选择 PixelBar。侧栏顶部应显示绿色「已连接」。"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border
+                                Width="32"
+                                Height="32"
+                                Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                CornerRadius="16">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontWeight="SemiBold"
+                                    Foreground="White"
+                                    Text="3" />
+                            </Border>
+                            <StackPanel Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Style="{StaticResource SectionLabelStyle}" Text="探索功能" />
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="文字 · 氛围灯光 · 像素屏（时钟 / 频谱 / 主题色）。左侧导航可随时切换。"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border
+                                Width="32"
+                                Height="32"
+                                Background="{ThemeResource AccentFillColorSecondaryBrush}"
+                                CornerRadius="16">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontWeight="SemiBold"
+                                    Text="4" />
+                            </Border>
+                            <StackPanel Spacing="4" VerticalAlignment="Center">
+                                <TextBlock Style="{StaticResource SectionLabelStyle}" Text="可选：后台运行" />
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="在设置中可开启「开机自动启动」和「关闭时最小化到通知区域」。"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource SectionCardStyle}">
+                    <StackPanel Spacing="8">
+                        <TextBlock Style="{StaticResource SectionLabelStyle}" Text="不支持的功能" />
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="游戏、宠物、自创空间图片等须使用官方 EDIFIER TempoHub 上传，本应用不提供相关控制。"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Column="0"
+                        Click="ConnectDeviceButton_Click"
+                        Content="前往连接设备"
+                        Style="{StaticResource PrimaryActionButtonStyle}" />
+                    <Button
+                        Grid.Column="1"
+                        Height="44"
+                        Click="EnterAppButton_Click"
+                        Content="进入应用"
+                        FontWeight="SemiBold"
+                        Style="{StaticResource AccentButtonStyle}" />
+                </Grid>
+
+                <CheckBox
+                    x:Name="SkipWelcomeCheckBox"
+                    Content="下次启动不再显示此引导"
+                    IsChecked="True" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore PixelBar.slnx
+
+      - name: Build
+        run: dotnet build PixelBar.slnx -c Release --no-restore
+
+      - name: Pack SDK
+        run: dotnet pack src/PixelBar.Sdk/PixelBar.Sdk.csproj -c Release --no-build -o artifacts/nupkg
+
+      - name: Upload SDK package
+        uses: actions/upload-artifact@v4
+        with:
+          name: PixelBar.Sdk-nupkg
+          path: artifacts/nupkg/*.nupkg
+          if-no-files-found: error

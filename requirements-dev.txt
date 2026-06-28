@@ -1,0 +1,5 @@
+# PixelBar — Python 依赖（逆向分析 / 图标生成，可选）
+
+Pillow>=10.0.0
+frida>=16.0.0
+psutil>=5.9.0

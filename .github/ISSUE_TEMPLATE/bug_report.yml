@@ -1,0 +1,36 @@
+name: Bug report
+description: 报告缺陷或协议异常
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提交前请确认已阅读 [免责声明](https://github.com/PixelBar-Project/PixelBar/blob/main/README.md#免责声明)。
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+      description: 期望行为 vs 实际行为
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本
+      placeholder: v1.0.0 或 main 提交 SHA
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: 环境
+      description: Windows 版本、.NET 版本、是否同时运行 TempoHub
+      value: |
+        - OS:
+        - PixelBar 版本:
+        - TempoHub 同时运行:

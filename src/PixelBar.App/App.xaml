@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application
+    x:Class="PixelBar_App.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PixelBar_App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <x:Double x:Key="AppContentMaxWidth">880</x:Double>
+            <Thickness x:Key="AppPagePadding">32,28,32,40</Thickness>
+            <Thickness x:Key="SectionCardPadding">20</Thickness>
+            <CornerRadius x:Key="SectionCardRadius">12</CornerRadius>
+
+            <Style x:Key="SectionCardStyle" TargetType="Border">
+                <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+                <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="{StaticResource SectionCardRadius}" />
+                <Setter Property="Padding" Value="{StaticResource SectionCardPadding}" />
+            </Style>
+
+            <Style x:Key="SceneCardStyle" TargetType="Border">
+                <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+                <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Padding" Value="14" />
+            </Style>
+
+            <Style x:Key="PrimaryActionButtonStyle" BasedOn="{StaticResource AccentButtonStyle}" TargetType="Button">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="Height" Value="44" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+            </Style>
+
+            <Style x:Key="SectionLabelStyle" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

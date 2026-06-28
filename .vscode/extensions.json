@@ -1,0 +1,6 @@
+{
+  "recommendations": [
+    "anysphere.csharp",
+    "ms-dotnettools.vscode-dotnet-runtime"
+  ]
+}

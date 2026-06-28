@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="PixelBar_App.Pages.PatternPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:PixelBar_App.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:PixelBar_App.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid
+            MaxWidth="{StaticResource AppContentMaxWidth}"
+            Padding="{StaticResource AppPagePadding}"
+            HorizontalAlignment="Center">
+            <StackPanel Spacing="20">
+                <controls:PageHeader
+                    Subtitle="设备实时生成音频频谱动画。单击样式即可切换，无需上传帧数据。"
+                    Title="像素屏 · 频谱" />
+
+                <InfoBar
+                    x:Name="StatusBar"
+                    IsOpen="False"
+                    IsClosable="True" />
+
+                <GridView
+                    x:Name="SpectrumGrid"
+                    IsItemClickEnabled="True"
+                    ItemClick="SpectrumGrid_ItemClick"
+                    SelectionMode="None">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="local:SpectrumSceneItem">
+                            <Border Style="{StaticResource SceneCardStyle}" Width="280">
+                                <StackPanel Spacing="10">
+                                    <Border
+                                        Background="{ThemeResource LayerFillColorDefaultBrush}"
+                                        CornerRadius="8">
+                                        <Image
+                                            Height="88"
+                                            HorizontalAlignment="Stretch"
+                                            Source="{x:Bind PreviewImage}"
+                                            Stretch="Uniform" />
+                                    </Border>
+                                    <StackPanel Spacing="2">
+                                        <TextBlock
+                                            FontSize="12"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            Text="{x:Bind StyleLabel}" />
+                                        <TextBlock FontWeight="SemiBold" Text="{x:Bind Title}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>
