@@ -22,7 +22,9 @@ jobs:
           global-json-file: global.json
 
       - name: Restore
-        run: dotnet restore PixelBar.slnx
+        run: |
+          dotnet restore src/PixelBar.App/PixelBar.App.csproj -r win-x64
+          dotnet restore PixelBar.slnx
 
       - name: Build
         run: dotnet build PixelBar.slnx -c Release --no-restore

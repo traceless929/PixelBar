@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "v*.*.*"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -24,12 +25,18 @@ jobs:
         id: version
         shell: bash
         run: |
-          TAG="${GITHUB_REF_NAME#v}"
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            TAG="${GITHUB_REF_NAME#v}"
+          else
+            TAG=$(sed -n 's:.*<Version>\([^<]*\)</Version>.*:\1:p' src/Directory.Build.props | head -1)
+          fi
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "Version=$TAG"
 
       - name: Restore
-        run: dotnet restore PixelBar.slnx
+        run: |
+          dotnet restore src/PixelBar.App/PixelBar.App.csproj -r win-x64
+          dotnet restore PixelBar.slnx
 
       - name: Build
         run: dotnet build PixelBar.slnx -c Release --no-restore -p:Version=${{ steps.version.outputs.tag }}
