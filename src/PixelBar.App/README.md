@@ -18,7 +18,7 @@
 
 - Windows 10 1809+（推荐 Windows 11）
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- USB 连接的 Halo PixelBar（VID/PID `0x2D99` / `0xA106`）
+- USB 连接的 Halo PixelBar（VID `0x2D99`，PID `0xA106` / `0xA160`）
 
 应用图标：`src/PixelBar.App/Assets/`（源文件 `assets/pixelbar-logo-master.png`）。重新生成：
 

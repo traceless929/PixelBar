@@ -87,7 +87,8 @@ foreach (var p in packets)
 
 - Windows 10+
 - .NET 10（`net10.0-windows`）
-- 设备 VID/PID：`0x2D99` / `0xA106`
+- 设备 VID：`0x2D99`；PID：`0xA106` / `0xA160`
+- 本次实测的 2026 新款使用 PID `0xA160`，屏幕集合为 `MI_04 / Col02`、UsagePage `0xFF14`、Usage `0x0001`，输入和输出报告均为 64 字节。已验证设备发现和句柄访问，控制协议兼容性仍需逐项验证。
 
 ## 设备能力
 

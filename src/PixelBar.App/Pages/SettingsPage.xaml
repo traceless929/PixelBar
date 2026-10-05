@@ -134,7 +134,7 @@
                             Text="版本 —" />
                         <TextBlock
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                            Text="VID/PID 0x2D99 / 0xA106 · UsagePage 0xFF24"
+                            Text="VID 0x2D99 · PID 0xA106 / 0xA160 · UsagePage 0xFF24 / 0xFF14"
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
