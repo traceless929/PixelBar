@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using PixelBar_App.Helpers;
 using PixelBar_App.Services;
 using PixelBar_App.Services.Lyrics;
+using PixelBar.Sdk.Protocol;
 using Windows.System;
 
 namespace PixelBar_App.Pages;
@@ -12,6 +13,7 @@ public sealed partial class LyricsPage : Page
     private bool _loaded;
     private bool _suppressSave;
     private LyricsMusicProvider _selectedProvider = LyricsMusicProvider.QqMusic;
+    private CancellationTokenSource? _previewCancellation;
 
     public LyricsPage()
     {
@@ -29,8 +31,10 @@ public sealed partial class LyricsPage : Page
         ScrollSwitch.IsOn = settings.LyricsScrollLongLines;
         TimingOffsetBox.Value = settings.LyricsTimingOffsetMs;
         SelectScrollDirection(settings.LyricsScrollRightToLeft);
+        SelectAnimation(settings.LyricsAnimation);
         SelectProvider(settings.LyricsProvider);
         UpdateScrollDirectionPanelVisibility();
+        UpdateAnimationUi();
         UpdateProviderUi();
         UpdateInfLinkUi();
         _suppressSave = false;
@@ -45,8 +49,12 @@ public sealed partial class LyricsPage : Page
             LyricsSyncService.Instance.DiagnosticMessage);
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e) =>
+    private void OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        _loaded = false;
+        _previewCancellation?.Cancel();
         LyricsSyncService.Instance.StatusChanged -= OnLyricsStatusChanged;
+    }
 
     private void EnableSwitch_Toggled(object sender, RoutedEventArgs e)
     {
@@ -54,6 +62,7 @@ public sealed partial class LyricsPage : Page
             return;
 
         SaveSettings();
+        UpdateAnimationUi();
         if (EnableSwitch.IsOn && _selectedProvider == LyricsMusicProvider.NetEaseCloudMusic
             && NetEaseInfLinkInstaller.GetInstallState() != NetEaseInfLinkInstallState.Installed)
         {
@@ -118,7 +127,79 @@ public sealed partial class LyricsPage : Page
             GetSelectedScrollRightToLeft(),
             _selectedProvider,
             _selectedProvider == LyricsMusicProvider.QqMusic ? LyricDirBox.Text : settings.QqMusicLyricDirectory,
-            _selectedProvider == LyricsMusicProvider.NetEaseCloudMusic ? LyricDirBox.Text : settings.NetEaseLyricDirectory);
+            _selectedProvider == LyricsMusicProvider.NetEaseCloudMusic ? LyricDirBox.Text : settings.NetEaseLyricDirectory,
+            GetSelectedAnimation());
+    }
+
+    private void AnimationGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (!_loaded || _suppressSave)
+            return;
+
+        UpdateAnimationUi();
+        SaveSettings();
+    }
+
+    private void SelectAnimation(LyricAnimation animation)
+    {
+        var selected = Enum.IsDefined(animation) ? animation : LyricAnimation.BottomToTop;
+        foreach (var item in AnimationGroup.Items)
+        {
+            if (item is RadioButton radio && byte.TryParse(radio.Tag as string, out var value))
+                radio.IsChecked = value == (byte)selected;
+        }
+    }
+
+    private LyricAnimation GetSelectedAnimation()
+    {
+        foreach (var item in AnimationGroup.Items)
+        {
+            if (item is RadioButton { IsChecked: true, Tag: string tag }
+                && byte.TryParse(tag, out var value) && Enum.IsDefined((LyricAnimation)value))
+                return (LyricAnimation)value;
+        }
+
+        return LyricAnimation.BottomToTop;
+    }
+
+    private void UpdateAnimationUi()
+    {
+        var allowScroll = EnableSwitch.IsOn && GetSelectedAnimation() == LyricAnimation.None;
+        ScrollSwitch.IsEnabled = allowScroll;
+        ScrollDirectionGroup.IsEnabled = allowScroll;
+        UpdateScrollDirectionPanelVisibility();
+    }
+
+    private async void PreviewAnimationButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_previewCancellation is not null)
+            return;
+
+        using var cancellation = new CancellationTokenSource();
+        _previewCancellation = cancellation;
+        PreviewAnimationButton.IsEnabled = false;
+        AnimationGroup.IsEnabled = false;
+        UiFeedback.Show(StatusBar, InfoBarSeverity.Informational, "正在试播，请观察音响像素屏上的三行文字…");
+        try
+        {
+            await LyricsSyncService.Instance.PreviewAnimationAsync(GetSelectedAnimation(), cancellation.Token);
+            if (_loaded)
+                UiFeedback.Show(StatusBar, InfoBarSeverity.Success, "试播完成；已恢复正常歌词同步。");
+        }
+        catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
+        {
+        }
+        catch (Exception ex)
+        {
+            if (_loaded)
+                UiFeedback.Show(StatusBar, InfoBarSeverity.Error, ex.Message);
+        }
+        finally
+        {
+            _previewCancellation = null;
+            PreviewAnimationButton.IsEnabled = true;
+            AnimationGroup.IsEnabled = true;
+        }
     }
 
     private void SelectProvider(LyricsMusicProvider provider)
@@ -302,7 +383,8 @@ public sealed partial class LyricsPage : Page
     }
 
     private void UpdateScrollDirectionPanelVisibility() =>
-        ScrollDirectionPanel.Visibility = ScrollSwitch.IsOn ? Visibility.Visible : Visibility.Collapsed;
+        ScrollDirectionPanel.Visibility = ScrollSwitch.IsOn && GetSelectedAnimation() == LyricAnimation.None
+            ? Visibility.Visible : Visibility.Collapsed;
 
     private async void OpenWikiButton_Click(object sender, RoutedEventArgs e)
     {

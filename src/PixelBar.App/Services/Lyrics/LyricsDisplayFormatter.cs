@@ -12,11 +12,20 @@ public static class LyricsDisplayFormatter
         PixelBarClient client,
         string text,
         bool scrollLongLines,
-        TextScrollDirection scrollDirection = TextScrollDirection.LeftToRight)
+        TextScrollDirection scrollDirection = TextScrollDirection.LeftToRight,
+        LyricAnimation animation = LyricAnimation.None)
     {
         text = text.Trim();
         if (text.Length == 0)
             return;
+
+        if (animation != LyricAnimation.None)
+        {
+            client.ShowLyric(TruncateToUtf8Bytes(text, LyricReportEncoder.MaxUtf8Bytes), animation);
+            return;
+        }
+
+        client.DisableLyricAnimation();
 
         var utf8Length = Encoding.UTF8.GetByteCount(text);
         if (utf8Length > TextReportEncoder.MaxUtf8Bytes)
@@ -38,13 +47,13 @@ public static class LyricsDisplayFormatter
 
         var builder = new StringBuilder(text.Length);
         var used = 0;
-        foreach (var ch in text)
+        foreach (var rune in text.EnumerateRunes())
         {
-            var size = Encoding.UTF8.GetByteCount([ch]);
+            var size = rune.Utf8SequenceLength;
             if (used + size > maxBytes)
                 break;
 
-            builder.Append(ch);
+            builder.Append(rune.ToString());
             used += size;
         }
 

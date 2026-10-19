@@ -47,7 +47,8 @@ public static class PixelBarDiscovery
     {
         var lower = path.ToLowerInvariant();
         return lower.Contains($"vid_{PixelBarUsbIds.VendorId:x4}")
-            && lower.Contains($"pid_{PixelBarUsbIds.ProductId:x4}")
+            && (lower.Contains($"pid_{PixelBarUsbIds.ProductId:x4}")
+                || lower.Contains($"pid_{PixelBarUsbIds.ProductId2026:x4}"))
             && lower.Contains("col02");
     }
 }

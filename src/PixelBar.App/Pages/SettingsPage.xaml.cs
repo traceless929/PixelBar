@@ -135,7 +135,7 @@ public sealed partial class SettingsPage : Page
     private static string GetAppVersion()
     {
         var version = Assembly.GetExecutingAssembly().GetName().Version;
-        return version is null ? "1.0.0" : $"{version.Major}.{version.Minor}.{version.Build}";
+        return version is null ? "1.0.0" : version.ToString(version.Revision > 0 ? 4 : 3);
     }
 }
 

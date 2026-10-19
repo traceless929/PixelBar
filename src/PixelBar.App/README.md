@@ -8,17 +8,19 @@
 |------|------|
 | 文字 | 静态/滚动显示，对齐方式可选 |
 | 灯光 | 6 种氛围灯效 + 颜色 + 速度 |
-| 像素屏 · 时钟 | 11 种固件内置样式 |
+| 像素屏 · 时钟 | 11 种固件内置样式、立即校时、启动自动校时开关 |
 | 像素屏 · 频谱 | 4 种实时频谱样式 |
 | 像素屏 · 颜色 | 主题色调（HEX/RGB，已抓包验证） |
-| **动态歌词** | QQ 音乐：本地 qrc 解密、进度同步、时间偏移、长句滚动 |
+| **动态歌词** | QQ / 网易云进度同步、时间偏移、五组歌词切换动画、试播与长句滚动（关闭动画时） |
 | 设置 | 设备选择、连接状态、开机启动、托盘行为 |
 
 ## 系统要求
 
+歌词动画用法、协议依据与检查命令见 [歌词切换动画](../../docs/Lyric-Animations.md)。
+
 - Windows 10 1809+（推荐 Windows 11）
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- USB 连接的 Halo PixelBar（VID/PID `0x2D99` / `0xA106`）
+- USB 连接的 Halo PixelBar（VID `0x2D99`，PID `0xA106` / `0xA160`）
 
 应用图标：`src/PixelBar.App/Assets/`（源文件 `assets/pixelbar-logo-master.png`）。重新生成：
 

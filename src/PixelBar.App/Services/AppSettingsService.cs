@@ -1,5 +1,6 @@
 using System.Text.Json;
 using PixelBar_App.Services.Lyrics;
+using PixelBar.Sdk.Protocol;
 
 namespace PixelBar_App.Services;
 
@@ -61,6 +62,12 @@ public sealed class AppSettingsService
         StartupRegistrationService.Apply(Current);
     }
 
+    public void UpdateAutoSyncClockOnStartup(bool enabled)
+    {
+        Current.AutoSyncClockOnStartup = enabled;
+        Save(Current);
+    }
+
     public void UpdateMinimizeToTrayOnClose(bool enabled)
     {
         Current.MinimizeToTrayOnClose = enabled;
@@ -88,12 +95,14 @@ public sealed class AppSettingsService
         bool scrollRightToLeft,
         LyricsMusicProvider provider,
         string? qqLyricDirectory,
-        string? netEaseLyricDirectory)
+        string? netEaseLyricDirectory,
+        LyricAnimation animation = LyricAnimation.BottomToTop)
     {
         Current.LyricsEnabled = enabled;
         Current.LyricsScrollLongLines = scrollLongLines;
         Current.LyricsTimingOffsetMs = timingOffsetMs;
         Current.LyricsScrollRightToLeft = scrollRightToLeft;
+        Current.LyricsAnimation = Enum.IsDefined(animation) ? animation : LyricAnimation.BottomToTop;
         Current.LyricsProvider = provider;
         Current.QqMusicLyricDirectory = string.IsNullOrWhiteSpace(qqLyricDirectory) ? null : qqLyricDirectory.Trim();
         Current.NetEaseLyricDirectory = string.IsNullOrWhiteSpace(netEaseLyricDirectory) ? null : netEaseLyricDirectory.Trim();

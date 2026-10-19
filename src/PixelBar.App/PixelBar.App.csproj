@@ -13,7 +13,8 @@
     <WindowsPackageType>None</WindowsPackageType>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <EnableWinAppRunSupport>false</EnableWinAppRunSupport>
-    <EnableMsixTooling>false</EnableMsixTooling>
+    <!-- Unpackaged WinUI 仍需此构建工具将 XAML / PRI 资源带入发布目录。 -->
+    <EnableMsixTooling>true</EnableMsixTooling>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>

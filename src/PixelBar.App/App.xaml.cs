@@ -11,14 +11,23 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        if (LyricsPageSmokeTest.IsRequested)
+            UnhandledException += LyricsPageSmokeTest.OnUnhandledException;
         AppSettingsService.Instance.Load();
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        if (LyricsPageSmokeTest.IsRequested)
+        {
+            LyricsPageSmokeTest.Run();
+            return;
+        }
+
         var startInTray = ShouldStartInTray(args.Arguments);
 
         MainWindowInstance = new MainWindow();
+        ClockTimeSyncService.Instance.Initialize();
         TrayIconService.Instance.Initialize(
             () => MainWindowInstance?.ShowFromTray(),
             () => MainWindowInstance?.RequestExit());

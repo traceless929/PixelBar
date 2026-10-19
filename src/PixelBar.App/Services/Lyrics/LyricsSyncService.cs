@@ -11,6 +11,9 @@ public sealed class LyricsSyncService
     private readonly NetEaseLyricProvider _netEaseLyricProvider = new();
     private readonly NetEaseAnchoredPlaybackTracker _netEasePositionTracker = new();
     private readonly object _gate = new();
+    private readonly SemaphoreSlim _displayGate = new(1, 1);
+    private int _previewActive;
+    private int _displayVersion;
 
     private CancellationTokenSource? _cts;
     private Task? _loopTask;
@@ -85,18 +88,58 @@ public sealed class LyricsSyncService
             Start();
     }
 
+    /// <summary>串行试播三行歌词；预览期间暂停正常推送，结束后恢复当前歌词。</summary>
+    public async Task PreviewAnimationAsync(PixelBar.Sdk.Protocol.LyricAnimation animation, CancellationToken cancellationToken)
+    {
+        if (!PixelBarService.Instance.HasSelectedDevice)
+            throw new InvalidOperationException("请先在「设置」中连接 PixelBar。");
+        if (Interlocked.CompareExchange(ref _previewActive, 1, 0) != 0)
+            throw new InvalidOperationException("歌词动画正在试播，请稍候。");
+
+        try
+        {
+            await _displayGate.WaitAsync(cancellationToken).ConfigureAwait(false);
+            try
+            {
+                var client = PixelBarService.Instance.CreateClient();
+                foreach (var line in new[] { "歌词动画预览", "下一句缓缓入场", "让音乐动起来" })
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    LyricsDisplayFormatter.Show(client, line, false, animation: animation);
+                    await Task.Delay(1600, cancellationToken).ConfigureAwait(false);
+                }
+            }
+            finally
+            {
+                _displayGate.Release();
+            }
+        }
+        finally
+        {
+            Interlocked.Increment(ref _displayVersion);
+            Volatile.Write(ref _previewActive, 0);
+        }
+    }
+
     private async Task RunLoopAsync(CancellationToken cancellationToken)
     {
         string? trackKey = null;
         LrcDocument? document = null;
         LyricSource documentSource = LyricSource.None;
         string? lastSentLine = null;
+        var nextDocumentRetryUtc = DateTime.MinValue;
         var consumedResyncVersion = Volatile.Read(ref _resyncVersion);
 
         while (!cancellationToken.IsCancellationRequested)
         {
             try
             {
+                if (Volatile.Read(ref _previewActive) != 0)
+                {
+                    await Task.Delay(100, cancellationToken).ConfigureAwait(false);
+                    continue;
+                }
+
                 var settings = AppSettingsService.Instance.Current;
                 var provider = settings.LyricsProvider;
                 var resyncVersion = Volatile.Read(ref _resyncVersion);
@@ -115,7 +158,10 @@ public sealed class LyricsSyncService
                 }
 
                 var playback = await _monitor.TryGetPlaybackAsync(provider, cancellationToken).ConfigureAwait(false);
-                var desktop = TryReadDesktopLyrics(provider);
+                // InfLink 已提供可靠进度时，不再从整个网易云窗口猜测当前歌词。
+                var desktop = provider == LyricsMusicProvider.NetEaseCloudMusic && playback?.HasTrustedTimeline == true
+                    ? null
+                    : TryReadDesktopLyrics(provider);
                 playback ??= TryBuildFallbackPlayback(provider);
 
                 if (playback is null && desktop is null)
@@ -211,7 +257,8 @@ public sealed class LyricsSyncService
                 var needsDocumentReload = forceTrackChange
                                           || documentMismatch
                                           || identityChanged
-                                          || !string.Equals(trackKey, nextTrackKey, StringComparison.Ordinal);
+                                          || !string.Equals(trackKey, nextTrackKey, StringComparison.Ordinal)
+                                          || (document is null && DateTime.UtcNow >= nextDocumentRetryUtc);
 
                 if (needsDocumentReload)
                 {
@@ -219,7 +266,7 @@ public sealed class LyricsSyncService
                     _activeTrackKey = nextTrackKey;
                     _lastPlaybackDuration = playback?.Duration ?? TimeSpan.Zero;
                     _lastPlaybackPosition = playback?.Position ?? TimeSpan.Zero;
-                    _netEasePositionTracker.Reset();
+                    // 重新加载同一首歌的文档不能重置进度外推；切歌由 tracker 的 trackKey 检测。
                     (document, documentSource) = await ResolveDocumentAsync(
                         provider,
                         settings,
@@ -227,7 +274,8 @@ public sealed class LyricsSyncService
                         lookupArtist,
                         playback?.NetEaseSongId,
                         cancellationToken).ConfigureAwait(false);
-                    lastSentLine = null;
+                    nextDocumentRetryUtc = DateTime.UtcNow.AddSeconds(10);
+                    // 歌词文档可因桌面歌词匹配失败而反复重载；屏幕未变化时保留去重状态。
                     _loadedLookupTitle = lookupTitle ?? document?.Title;
                     _loadedLookupArtist = lookupArtist ?? document?.Artist;
                     displayTitle ??= document?.Title;
@@ -264,7 +312,10 @@ public sealed class LyricsSyncService
                 var scrollDirection = settings.LyricsScrollRightToLeft
                     ? PixelBar.Sdk.Protocol.TextScrollDirection.RightToLeft
                     : PixelBar.Sdk.Protocol.TextScrollDirection.LeftToRight;
-                var displaySignature = $"{displayText}|{settings.LyricsScrollLongLines}|{(int)scrollDirection}";
+                var animation = Enum.IsDefined(settings.LyricsAnimation)
+                    ? settings.LyricsAnimation
+                    : PixelBar.Sdk.Protocol.LyricAnimation.BottomToTop;
+                var displaySignature = $"{nextTrackKey}|{displayText}|{settings.LyricsScrollLongLines}|{(int)scrollDirection}|{(int)animation}|{Volatile.Read(ref _displayVersion)}";
 
                 if (!string.Equals(lastSentLine, displaySignature, StringComparison.Ordinal))
                 {
@@ -272,13 +323,29 @@ public sealed class LyricsSyncService
                     {
                         try
                         {
-                            var client = PixelBarService.Instance.CreateClient();
-                            LyricsDisplayFormatter.Show(
-                                client,
-                                displayText,
-                                settings.LyricsScrollLongLines,
-                                scrollDirection);
-                            lastSentLine = displaySignature;
+                            await _displayGate.WaitAsync(cancellationToken).ConfigureAwait(false);
+                            try
+                            {
+                                if (Volatile.Read(ref _previewActive) != 0)
+                                    continue;
+
+                                var client = PixelBarService.Instance.CreateClient();
+                                LyricsDisplayFormatter.Show(
+                                    client,
+                                    displayText,
+                                    settings.LyricsScrollLongLines,
+                                    scrollDirection,
+                                    animation);
+                                lastSentLine = displaySignature;
+                            }
+                            finally
+                            {
+                                _displayGate.Release();
+                            }
+                        }
+                        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                        {
+                            throw;
                         }
                         catch (Exception ex)
                         {
@@ -402,7 +469,7 @@ public sealed class LyricsSyncService
         return (null, LyricSource.None);
     }
 
-    private static void ResolveDisplayText(
+    internal static void ResolveDisplayText(
         LyricsMusicProvider provider,
         LrcDocument? document,
         LyricSource documentSource,
@@ -415,8 +482,7 @@ public sealed class LyricsSyncService
         out LyricSource source,
         out string displayText)
     {
-        var preferTimedLine = provider == LyricsMusicProvider.QqMusic
-            && playback?.HasTrustedTimeline == true;
+        var preferTimedLine = playback?.HasTrustedTimeline == true;
 
         if (document is not null)
         {

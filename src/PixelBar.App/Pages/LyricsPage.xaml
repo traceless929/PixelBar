@@ -73,6 +73,67 @@
 
                 <Border Style="{StaticResource SectionCardStyle}">
                     <StackPanel Spacing="16">
+                        <TextBlock Style="{StaticResource SectionLabelStyle}" Text="歌词切换动画" />
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="每次换行时，歌词在音响像素屏上进入、退出。选择一组动画，可直接试播。"
+                            TextWrapping="Wrap" />
+                        <RadioButtons
+                            x:Name="AnimationGroup"
+                            MaxColumns="2"
+                            SelectionChanged="AnimationGroup_SelectionChanged">
+                            <RadioButton Tag="1" IsChecked="True" AutomationProperties.Name="动画一：从底部往上进入，从底部往上退出">
+                                <StackPanel Spacing="4" Padding="4,6">
+                                    <TextBlock FontWeight="SemiBold" Text="↑　向上切换" />
+                                    <TextBlock FontSize="12" Text="进入：从底部往上　退出：从底部往上" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Tag="2" AutomationProperties.Name="动画二：从中间扩散进入，从两边收缩退出">
+                                <StackPanel Spacing="4" Padding="4,6">
+                                    <TextBlock FontWeight="SemiBold" Text="↔　扩散与收缩" />
+                                    <TextBlock FontSize="12" Text="进入：从中间扩散　退出：从两边收缩" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Tag="3" AutomationProperties.Name="动画三：从左往右进入，从右往左退出">
+                                <StackPanel Spacing="4" Padding="4,6">
+                                    <TextBlock FontWeight="SemiBold" Text="→　左右切换" />
+                                    <TextBlock FontSize="12" Text="进入：从左往右　退出：从右往左" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Tag="4" AutomationProperties.Name="动画四：从底部往上进入，从顶部往下退出">
+                                <StackPanel Spacing="4" Padding="4,6">
+                                    <TextBlock FontWeight="SemiBold" Text="↕　上下切换" />
+                                    <TextBlock FontSize="12" Text="进入：从底部往上　退出：从顶部往下" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Tag="5" AutomationProperties.Name="动画五：从顶部往下进入，从右往左退出">
+                                <StackPanel Spacing="4" Padding="4,6">
+                                    <TextBlock FontWeight="SemiBold" Text="↓　下落后左移" />
+                                    <TextBlock FontSize="12" Text="进入：从顶部往下　退出：从右往左" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Tag="0" AutomationProperties.Name="关闭歌词切换动画">
+                                <StackPanel Spacing="4" Padding="4,6">
+                                    <TextBlock FontWeight="SemiBold" Text="关闭动画" />
+                                    <TextBlock FontSize="12" Text="使用居中静态或长句滚动" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </RadioButton>
+                        </RadioButtons>
+                        <Button
+                            x:Name="PreviewAnimationButton"
+                            Click="PreviewAnimationButton_Click"
+                            Content="在音响上试播当前动画"
+                            HorizontalAlignment="Left" />
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            FontSize="12"
+                            Text="选择会自动保存；QQ 音乐和网易云均可使用。试播三行文字后自动恢复歌词同步。开启动画时由音响排版，关闭动画后可使用长句滚动。"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource SectionCardStyle}">
+                    <StackPanel Spacing="16">
                         <StackPanel Orientation="Horizontal" Spacing="12">
                             <TextBlock Style="{StaticResource SectionLabelStyle}" Text="使用引导" />
                             <HyperlinkButton
@@ -109,7 +170,6 @@
                         <ToggleSwitch
                             x:Name="ScrollSwitch"
                             Header="长句滚动显示"
-                            IsEnabled="{Binding ElementName=EnableSwitch, Path=IsOn}"
                             OffContent="居中静态"
                             OnContent="超出长度时滚动"
                             Toggled="ScrollSwitch_Toggled" />
@@ -120,7 +180,6 @@
                                 Text="滚动方向" />
                             <RadioButtons
                                 x:Name="ScrollDirectionGroup"
-                                IsEnabled="{Binding ElementName=EnableSwitch, Path=IsOn}"
                                 MaxColumns="2"
                                 SelectionChanged="ScrollDirectionGroup_SelectionChanged">
                                 <RadioButton Content="左 → 右" IsChecked="True" Tag="ltr" />

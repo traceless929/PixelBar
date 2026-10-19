@@ -1,6 +1,7 @@
 namespace PixelBar_App.Services;
 
 using PixelBar_App.Services.Lyrics;
+using PixelBar.Sdk.Protocol;
 
 public sealed class AppSettings
 {
@@ -10,9 +11,13 @@ public sealed class AppSettings
 
     public bool HasCompletedWelcome { get; set; }
 
+    public bool AutoSyncClockOnStartup { get; set; } = true;
+
     public bool LyricsEnabled { get; set; }
 
     public bool LyricsScrollLongLines { get; set; } = true;
+
+    public LyricAnimation LyricsAnimation { get; set; } = LyricAnimation.BottomToTop;
 
     /// <summary>相对歌词文件时间轴的偏移（毫秒）：&gt;0 早一些，&lt;0 晚一些。</summary>
     public int LyricsTimingOffsetMs { get; set; }

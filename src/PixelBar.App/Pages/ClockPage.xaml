@@ -24,6 +24,37 @@
                     IsOpen="False"
                     IsClosable="True" />
 
+                <Border Style="{StaticResource SectionCardStyle}">
+                    <StackPanel Spacing="16">
+                        <TextBlock Style="{StaticResource SectionLabelStyle}" Text="时间同步" />
+                        <TextBlock
+                            Text="将电脑当前的本地日期和时间同步到音响。"
+                            TextWrapping="Wrap"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <ToggleSwitch
+                            x:Name="AutoSyncClockSwitch"
+                            Header="启动应用时自动同步时间"
+                            OffContent="关闭"
+                            OnContent="开启"
+                            Toggled="AutoSyncClockSwitch_Toggled" />
+                        <TextBlock
+                            Text="开关会自动保存；包含托盘启动。启动时未找到设备，会在本次应用中选中设备后同步一次。"
+                            TextWrapping="Wrap"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <Button
+                            x:Name="SyncTimeButton"
+                            Content="立即同步时间"
+                            Click="SyncTimeButton_Click"
+                            HorizontalAlignment="Left" />
+                        <TextBlock
+                            x:Name="LastSyncText"
+                            Text="本次启动尚未同步"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                </Border>
+
                 <GridView
                     x:Name="ClockGrid"
                     IsItemClickEnabled="True"

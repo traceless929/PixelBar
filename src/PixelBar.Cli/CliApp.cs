@@ -22,6 +22,7 @@ public static class CliApp
             {
                 "list" => ListDevices(),
                 "text" => SendText(args),
+                "lyric" => SendLyric(args),
                 "rgb" => SendRgb(args),
                 "pattern" => SendPattern(args),
                 "clock" => SendClock(args),
@@ -73,6 +74,29 @@ public static class CliApp
         var layout = effect == TextDisplayEffect.Scroll ? scrollDirection.ToString() : alignment.ToString();
         Console.WriteLine($"Sent text: {text} ({effect}, {layout})");
         return 0;
+    }
+
+    static int SendLyric(string[] args)
+    {
+        var (text, animation) = ParseLyricOptions(args.Skip(1).ToArray());
+        PixelBarSdk.Connect().ShowLyric(text, animation);
+        Console.WriteLine($"Sent lyric: {text} (animation={(int)animation})");
+        return 0;
+    }
+
+    static (string Text, LyricAnimation Animation) ParseLyricOptions(string[] args)
+    {
+        if (args.Length == 0 || string.IsNullOrWhiteSpace(args[0]))
+            throw new ArgumentException("Usage: lyric <message> [animation 1-5]");
+        var animation = LyricAnimation.BottomToTop;
+        foreach (var option in args.Skip(1))
+        {
+            if (byte.TryParse(option, out var value) && value is >= 1 and <= 5)
+                animation = (LyricAnimation)value;
+            else
+                throw new ArgumentException("Lyric animation must be between 1 and 5.");
+        }
+        return (args[0], animation);
     }
 
     static int SendRgb(string[] args)
@@ -160,8 +184,16 @@ public static class CliApp
     {
         if (args.Length < 2)
         {
-            Console.Error.WriteLine("Usage: dry-run <text|rgb|pattern|clock|spectrum|screen-color> ...");
+            Console.Error.WriteLine("Usage: dry-run <text|lyric|rgb|pattern|clock|spectrum|screen-color> ...");
             return 1;
+        }
+
+        if (args[1].Equals("lyric", StringComparison.OrdinalIgnoreCase))
+        {
+            var (text, animation) = ParseLyricOptions(args.Skip(2).ToArray());
+            foreach (var packet in LyricReportEncoder.Encode(text, animation))
+                Console.WriteLine(HidReportFormatter.ToHex(packet));
+            return 0;
         }
 
         if (args[1].Equals("rgb", StringComparison.OrdinalIgnoreCase) && args.Length >= 4)
@@ -238,6 +270,7 @@ public static class CliApp
             Commands:
               list                         List connected screen endpoints
               text <message> [--scroll [ltr|rtl]] [--align left|center|right|justify]
+              lyric <message> [1-5]         Show lyrics with enter/exit animation (A106/A160 EC protocol)
               rgb <mode> <#RRGGBB> [speed]   Set RGB lighting (speed only for modes 1-2)
               pattern <1-11>               Switch clock pattern (legacy F0 B4 C8)
               clock <1-11>                 Switch clock style
@@ -251,6 +284,8 @@ public static class CliApp
               pixelbar text "你好 PixelBar"
               pixelbar rgb 3 #00FF00
               pixelbar spectrum 1
+              pixelbar lyric "让音乐动起来" 2
+              pixelbar dry-run lyric "歌词预览" 1
               dotnet run --project src/PixelBar.Cli -- text "Hello" --scroll rtl
 
             Install / publish:

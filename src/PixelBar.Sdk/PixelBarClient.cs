@@ -30,6 +30,19 @@ public sealed class PixelBarClient(string? devicePath = null)
         HidReportTransport.Send(TextReportEncoder.Encode(text), DevicePath);
     }
 
+    /// <summary>用固件内置的进入/退出动画显示歌词，支持 A106 与实测 2026 款 A160 的 EC 协议。</summary>
+    public void ShowLyric(string text, LyricAnimation animation = LyricAnimation.BottomToTop)
+    {
+        var path = DevicePath ?? PixelBarDiscovery.FindPrimary()?.DevicePath
+            ?? throw new InvalidOperationException("No PixelBar screen endpoint found.");
+        foreach (var report in LyricReportEncoder.Encode(text, animation))
+            HidReportTransport.Send(report, path);
+    }
+
+    /// <summary>关闭固件歌词叠层，恢复普通文字/场景显示。</summary>
+    public void DisableLyricAnimation() =>
+        HidReportTransport.Send(LyricReportEncoder.EncodeEnable(false), DevicePath);
+
     /// <summary>设置 RGB 灯光（官方 0x77 + 设备 0x6B）。</summary>
     public void SetLight(LightMode mode, RgbColor color, byte speed = RgbReportEncoder.DefaultSpeed)
     {
@@ -48,6 +61,14 @@ public sealed class PixelBarClient(string? devicePath = null)
     /// <summary>切换时钟样式 1–11（固件内置 F0 B4 C8）。</summary>
     public void ShowClock(int style) =>
         HidReportTransport.Send(PatternReportEncoder.Encode(style), DevicePath);
+
+    /// <summary>同步音响时间，默认使用电脑当前本地时间，返回实际发送的时间。</summary>
+    public DateTimeOffset SyncTime(DateTimeOffset? localTime = null)
+    {
+        var time = localTime ?? DateTimeOffset.Now;
+        HidReportTransport.Send(ClockSyncReportEncoder.Encode(time), DevicePath);
+        return time;
+    }
 
     /// <summary>?????????0xEF 00 04 03 + RGB???? screen_color_log.txt ???</summary>
     public void SetScreenColor(RgbColor color, bool syncAtmosphereLight = false)

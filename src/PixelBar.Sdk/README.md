@@ -65,6 +65,7 @@ client.SetLight(LightMode.PureStatic, RgbColor.FromHex("#00FF00"));
 
 // 时钟 / 频谱 / 屏色
 client.ShowClock(3);
+client.SyncTime(); // 将电脑当前的本地日期和时间发送给音响
 client.ShowSpectrum(1);
 client.SetScreenColor(RgbColor.FromHex("#0077EE"));
 ```
@@ -87,15 +88,19 @@ foreach (var p in packets)
 
 - Windows 10+
 - .NET 10（`net10.0-windows`）
-- 设备 VID/PID：`0x2D99` / `0xA106`
+- 设备 VID：`0x2D99`；PID：`0xA106` / `0xA160`
+- 本次实测的 2026 新款使用 PID `0xA160`，屏幕集合为 `MI_04 / Col02`、UsagePage `0xFF14`、Usage `0x0001`，输入和输出报告均为 64 字节。已验证设备发现和句柄访问，控制协议兼容性仍需逐项验证。
 
 ## 设备能力
 
 | API | 说明 |
 |-----|------|
 | `ShowText` | 文字 + 布局（静态/滚动、对齐） |
+| `ShowLyric` | 五组固件歌词进入/退出动画、UTF-8 长句分包（[说明与协议依据](../../docs/Lyric-Animations.md)） |
+| `DisableLyricAnimation` | 关闭歌词叠层，恢复普通文字或场景 |
 | `SetLight` | 6 种灯效 + 颜色（速度仅 mode 1–2） |
 | `ShowClock` / `ShowPattern` | 时钟样式 1–11 |
+| `SyncTime` | 校准本地日期/时间，保留 12/24 小时设置；返回发送的时间 |
 | `ShowSpectrum` | 频谱样式 1–4 |
 | `SetScreenColor` | 像素屏主题色（`0xEF 00 04 03` + RGB） |
 

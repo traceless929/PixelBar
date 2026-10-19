@@ -16,6 +16,10 @@
 
 ## 快速开始
 
+**歌词切换动画版**：在「动态歌词」选择五组进入/退出效果，可直接在音响上试播，QQ 音乐与网易云均可使用。见[歌词动画说明及协议依据](docs/Lyric-Animations.md)。
+
+**时间同步**：时钟页支持立即同步电脑本地时间，或通过开关选择在每次启动应用时自动同步。见[时钟校时说明](docs/Clock-Time-Sync.md)。
+
 ### 图形客户端（推荐）
 
 ```bash
@@ -42,9 +46,12 @@ client.SetScreenColor(RgbColor.FromHex("#0077EE"));
 ## 设备信息
 
 - **设备**: 漫步者花再 Halo PixelBar
-- **VID/PID**: 0x2D99 / 0xA106
+- **VID**: 0x2D99；**PID**: 0xA106 / 0xA160
 - **厂商**: 杰理科技 (Jieli Technology)
-- **HID 接口**: MI_04 Col02 (UsagePage 0xFF24) — 屏幕/灯光数据通道
+- **HID 接口**: MI_04 Col02 — 屏幕/灯光数据通道
+- **已观测的屏幕集合**: 原项目已适配的 A106 / UsagePage 0xFF24；本次实测的 2026 新款 A160 / UsagePage 0xFF14、Usage 0x0001、输入和输出报告均为 64 字节
+- A160 已验证设备发现和 HID 句柄访问；各控制功能仍需逐项验证
+- 官方于 2026 年 9 月发布 [HALO PIXELBAR 强化版](https://www.sina.cn/news/detail/5340884200852839.html)，并提供了[与常规版的升级说明](https://www.sina.cn/news/detail/5341969528390309.html)。A160 是本次 2026 新款设备的现场枚举结果，官方公开资料未公布 USB PID 对照表。
 
 ## 目录结构
 

@@ -42,7 +42,8 @@ public static class NetEaseLyricApiClient
 
         try
         {
-            var url = $"https://music.163.com/api/song/lyric?id={numericSongId}&lv=1&kv=1&tv=-1";
+            // 这些参数表示本地已有版本；1 会让版本恰为 1 的歌词返回空内容。
+            var url = $"https://music.163.com/api/song/lyric?id={numericSongId}&lv=-1&kv=-1&tv=-1";
             var json = await HttpClient.GetStringAsync(url, cancellationToken).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(json) || !json.Contains("\"code\"", StringComparison.Ordinal))
                 return null;
@@ -51,10 +52,14 @@ public static class NetEaseLyricApiClient
             if (doc.RootElement.TryGetProperty("code", out var codeElement) && codeElement.GetInt32() != 200)
                 return null;
 
+            var document = TryParseResponse(json, title, artist);
+            if (document is null)
+                return null;
+
             await File.WriteAllTextAsync(cachePath, json, cancellationToken).ConfigureAwait(false);
             NetEaseLyricMetaStore.Write(numericSongId, title, artist, cachePath);
 
-            return TryLoadCachedDocument(cachePath, title, artist);
+            return document;
         }
         catch
         {
@@ -67,7 +72,14 @@ public static class NetEaseLyricApiClient
         if (!File.Exists(cachePath))
             return null;
 
-        var document = NetEaseLyricCacheParser.TryParseFile(cachePath);
+        return PrepareDocument(NetEaseLyricCacheParser.TryParseFile(cachePath), title, artist);
+    }
+
+    internal static LrcDocument? TryParseResponse(string json, string? title, string? artist) =>
+        PrepareDocument(NetEaseLyricCacheParser.TryParseContent(json), title, artist);
+
+    private static LrcDocument? PrepareDocument(LrcDocument? document, string? title, string? artist)
+    {
         if (document is null || document.Lines.Count == 0)
             return null;
 
